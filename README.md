@@ -1,2 +1,2 @@
-# Texture Mesh Editor
-Texture Mesh Editor is a Unity package for automatic generation of optimized meshes based on e.g. texture alpha with added manual editing capabilities and with more options than what the Unity Sprite Editor provides.
+# Michi's Mesh Makers
+Various Unity editor windows for creating mesh assets, primarily for particle systems and other visual effects.
