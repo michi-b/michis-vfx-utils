@@ -1,2 +1,2 @@
 # Michi's Mesh Makers
-Various editor windows for creating meshes, primarily for particle systems and other visual effects
+Various Unity editor windows for creating mesh assets, primarily for particle systems and other visual effects.
