@@ -1,0 +1,83 @@
+﻿using System;
+using JetBrains.Annotations;
+using UnityEditor;
+using UnityEngine;
+
+namespace MichisMeshMakers
+{
+    public abstract class Window : EditorWindow
+    {
+        private static int _windowCount;
+        [PublicAPI] public static GuiStyles Styles { get; private set; }
+
+        private Vector2 SettingsScrollPosition { get; set; }
+
+        protected virtual void OnEnable()
+        {
+            _windowCount++;
+            if (_windowCount == 1) Styles = new GuiStyles();
+        }
+
+        protected virtual void OnDisable()
+        {
+            _windowCount--;
+
+            if (_windowCount > 0) return;
+
+            Styles.Dispose();
+            Styles = null;
+        }
+
+        public class GuiStyles : IDisposable
+        {
+            private readonly Texture2D _transparentDarkTexture = TextureUtility.CreateSinglePixel(new Color(0.1f, 0.1f, 0.1f, 0.5f));
+
+            public GuiStyles()
+            {
+                SettingsBlock = new GUIStyle
+                {
+                    normal = { background = _transparentDarkTexture }
+                };
+            }
+
+            public GUIStyle Default { get; } = new GUIStyle();
+
+            public GUIStyle SettingsBlock { get; }
+
+            public void Dispose()
+            {
+                DestroyImmediate(_transparentDarkTexture);
+            }
+        }
+        
+        public SettingsScope CreateSettingsScope()
+        {
+            return new SettingsScope(this);
+        }
+        
+        [PublicAPI]
+        public class SettingsScope : IDisposable
+        {
+            private const float SettingsScopeWidth = 250f;
+            private readonly EditorGUILayout.VerticalScope _settingsScope;
+            private readonly GUILayout.ScrollViewScope _scrollScope;
+
+            public SettingsScope(Window window)
+            {
+                _settingsScope = new EditorGUILayout.VerticalScope(Styles.SettingsBlock, GUILayout.Width(SettingsScopeWidth), GUILayout.ExpandHeight(true));
+                EditorGUI.BeginChangeCheck();
+                _scrollScope = new GUILayout.ScrollViewScope(window.SettingsScrollPosition, false, true, GUILayout.ExpandHeight(true));
+                if (EditorGUI.EndChangeCheck())
+                {
+                    window.SettingsScrollPosition = _scrollScope.scrollPosition;
+                }
+            }
+
+            public void Dispose()
+            {
+                _scrollScope.Dispose();
+                _settingsScope.Dispose();
+            }
+        }
+    }
+}

@@ -1,7 +1,6 @@
-﻿using UnityEditor.Graphs;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace TextureMeshEditor
+namespace MichisMeshMakers
 {
     public static class TextureUtility
     {

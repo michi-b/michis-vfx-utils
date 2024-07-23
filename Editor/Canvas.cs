@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 
-namespace TextureMeshEditor
+namespace MichisMeshMakers
 {
     public class Canvas
     {
-        private Texture2D _texture;
-        private Vector2 _size;
-        private Vector2 _zoom = Vector2.one;
         private Vector2 _offset = Vector2.zero;
+        private Vector2 _size;
+        private Texture2D _texture;
+        private Vector2 _zoom = Vector2.one;
 
         public Canvas(Texture2D texture, Vector2 size)
         {
