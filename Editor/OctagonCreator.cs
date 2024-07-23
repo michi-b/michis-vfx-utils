@@ -7,7 +7,7 @@ namespace MichisMeshMakers
     {
         private const string Title = "Octagon Creator";
         
-        private Canvas _canvas;
+        private TextureCanvas _canvas;
 
         private Texture2D _texture;
 

@@ -2,14 +2,14 @@
 
 namespace MichisMeshMakers
 {
-    public class Canvas
+    public class TextureCanvas
     {
         private Vector2 _offset = Vector2.zero;
         private Vector2 _size;
         private Texture2D _texture;
         private Vector2 _zoom = Vector2.one;
 
-        public Canvas(Texture2D texture, Vector2 size)
+        public TextureCanvas(Texture2D texture, Vector2 size)
         {
             _texture = texture;
             _size = size;
