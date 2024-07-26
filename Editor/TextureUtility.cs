@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace MichisMeshMakers
+namespace MichisMeshMakers.Editor
 {
     public static class TextureUtility
     {

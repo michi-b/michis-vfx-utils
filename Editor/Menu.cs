@@ -1,4 +1,4 @@
-﻿namespace MichisMeshMakers
+﻿namespace MichisMeshMakers.Editor
 {
     public class Menu
     {

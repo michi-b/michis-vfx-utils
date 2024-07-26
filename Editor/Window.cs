@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 using UnityEditor;
 using UnityEngine;
 
-namespace MichisMeshMakers
+namespace MichisMeshMakers.Editor
 {
     public abstract class Window : EditorWindow
     {
@@ -15,17 +15,28 @@ namespace MichisMeshMakers
         protected virtual void OnEnable()
         {
             _windowCount++;
-            if (_windowCount == 1) Styles = new GuiStyles();
+            if (_windowCount == 1)
+            {
+                Styles = new GuiStyles();
+            }
         }
 
         protected virtual void OnDisable()
         {
             _windowCount--;
 
-            if (_windowCount > 0) return;
+            if (_windowCount > 0)
+            {
+                return;
+            }
 
             Styles.Dispose();
             Styles = null;
+        }
+
+        public SettingsScope CreateSettingsScope()
+        {
+            return new SettingsScope(this);
         }
 
         public class GuiStyles : IDisposable
@@ -49,18 +60,13 @@ namespace MichisMeshMakers
                 DestroyImmediate(_transparentDarkTexture);
             }
         }
-        
-        public SettingsScope CreateSettingsScope()
-        {
-            return new SettingsScope(this);
-        }
-        
+
         [PublicAPI]
         public class SettingsScope : IDisposable
         {
             private const float SettingsScopeWidth = 250f;
-            private readonly EditorGUILayout.VerticalScope _settingsScope;
             private readonly GUILayout.ScrollViewScope _scrollScope;
+            private readonly EditorGUILayout.VerticalScope _settingsScope;
 
             public SettingsScope(Window window)
             {
