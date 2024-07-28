@@ -14,7 +14,9 @@ namespace MichisMeshMakers.Editor.OctagonCreator
 
         public void Draw(Rect canvasRect)
         {
-            EditorGUI.DrawPreviewTexture(canvasRect, Assets.Textures.CanvasGrid, Assets.Materials.CanvasGrid, ScaleMode.ScaleAndCrop);
+            var canvasGridMaterial = Assets.MaterialInstances.CanvasGrid;
+            canvasGridMaterial.SetVector(Ids.MaterialProperties.RectSize, canvasRect.size);
+            EditorGUI.DrawPreviewTexture(canvasRect, Assets.Textures.CanvasGrid, canvasGridMaterial, ScaleMode.StretchToFill);
 
             if (Event.current.type != EventType.Layout)
             {

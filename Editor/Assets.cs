@@ -9,14 +9,13 @@ namespace MichisMeshMakers.Editor
         private static Assets _instance;
 
         [SerializeField] private MaterialCollection _materials;
-
+        [SerializeField] private MaterialInstanceCollection _materialInstances;
         [SerializeField] private TextureCollection _textures;
-
 
         private static Assets Instance => _instance ??= Load();
 
         public static MaterialCollection Materials => Instance._materials;
-
+        public static MaterialInstanceCollection MaterialInstances => Instance._materialInstances;
         public static TextureCollection Textures => Instance._textures;
 
         private static Assets Load()
@@ -35,6 +34,8 @@ namespace MichisMeshMakers.Editor
             {
                 throw new Exception($"Paths at {path} is not a {typeof(Assets).FullName}");
             }
+            
+            result._materialInstances.Load();
 
             return result;
         }
@@ -43,11 +44,24 @@ namespace MichisMeshMakers.Editor
         public class MaterialCollection
         {
             [SerializeField] private Material _white;
-            [SerializeField] private Material _canvasGrid;
 
             public Material White => _white;
+        }
 
-            public Material CanvasGrid => _canvasGrid;
+        [Serializable]
+        public class MaterialInstanceCollection
+        {
+            [SerializeField] private Material _canvasGrid;
+
+            private Material _canvasGridInstance;
+
+            public Material CanvasGrid => _canvasGridInstance;
+
+            // ReSharper disable once MemberHidesStaticFromOuterClass
+            public void Load()
+            {
+                _canvasGridInstance = new Material(_canvasGrid);
+            }
         }
 
         [Serializable]
