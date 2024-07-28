@@ -10,9 +10,14 @@ namespace MichisMeshMakers.Editor
 
         [SerializeField] private MaterialCollection _materials;
 
+        [SerializeField] private TextureCollection _textures;
+
+
         private static Assets Instance => _instance ??= Load();
 
         public static MaterialCollection Materials => Instance._materials;
+
+        public static TextureCollection Textures => Instance._textures;
 
         private static Assets Load()
         {
@@ -38,8 +43,19 @@ namespace MichisMeshMakers.Editor
         public class MaterialCollection
         {
             [SerializeField] private Material _white;
+            [SerializeField] private Material _canvasGrid;
 
             public Material White => _white;
+
+            public Material CanvasGrid => _canvasGrid;
+        }
+
+        [Serializable]
+        public class TextureCollection
+        {
+            [SerializeField] private Texture2D _canvasGrid;
+
+            public Texture2D CanvasGrid => _canvasGrid;
         }
     }
 }
