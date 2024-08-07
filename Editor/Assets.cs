@@ -13,7 +13,6 @@ namespace MichisMeshMakers.Editor
         [SerializeField] private TextureCollection _textures;
 
         private static Assets Instance => _instance ??= Load();
-
         public static MaterialCollection Materials => Instance._materials;
         public static MaterialInstanceCollection MaterialInstances => Instance._materialInstances;
         public static TextureCollection Textures => Instance._textures;
@@ -39,12 +38,17 @@ namespace MichisMeshMakers.Editor
 
             return result;
         }
+        
+        public void ReloadMaterialInstances()
+        {
+            _materialInstances.Load();
+        }
 
         [Serializable]
         public class MaterialCollection
         {
             [SerializeField] private Material _white;
-
+            
             public Material White => _white;
         }
 
@@ -52,15 +56,21 @@ namespace MichisMeshMakers.Editor
         public class MaterialInstanceCollection
         {
             [SerializeField] private Material _canvasGrid;
+            [SerializeField] private Material _additive;
+            
 
             private Material _canvasGridInstance;
+            private Material _additiveInstance;
 
             public Material CanvasGrid => _canvasGridInstance;
 
+            public Material Additive => _additiveInstance;
+            
             // ReSharper disable once MemberHidesStaticFromOuterClass
             public void Load()
             {
                 _canvasGridInstance = new Material(_canvasGrid);
+                _additiveInstance = new Material(_additive);
             }
         }
 

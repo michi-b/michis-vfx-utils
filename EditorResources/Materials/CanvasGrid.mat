@@ -27,5 +27,6 @@ Material:
     - _Color1: {r: 0.16078432, g: 0.16078432, b: 0.16078432, a: 1}
     - _Color2: {r: 0.31764707, g: 0.31764707, b: 0.31764707, a: 1}
     - _EvenColor: {r: 0.15, g: 0.15, b: 0.15, a: 1}
+    - _RectSize: {r: 1000, g: 1000, b: 0, a: 0}
     - _UnevenColor: {r: 0.25, g: 0.25, b: 0.25, a: 1}
   m_BuildTextureStacks: []

@@ -15,6 +15,7 @@ namespace MichisMeshMakers.Editor.OctagonCreator
         {
             base.OnEnable();
             _canvas = new OctagonCreatorCanvas();
+            ApplyTexture();
         }
 
         protected virtual void OnGUI()
@@ -41,8 +42,13 @@ namespace MichisMeshMakers.Editor.OctagonCreator
             _texture = (Texture2D)EditorGUILayout.ObjectField("Target Texture", _texture, typeof(Texture2D), false);
             if (EditorGUI.EndChangeCheck())
             {
-                _canvas.SetTexture(_texture);
+                ApplyTexture();
             }
+        }
+
+        private void ApplyTexture()
+        {
+            _canvas.SetTexture(_texture);
         }
     }
 }

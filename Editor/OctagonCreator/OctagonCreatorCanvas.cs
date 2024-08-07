@@ -1,8 +1,11 @@
-﻿using UnityEditor;
+﻿using System;
+using MichisMeshMakers.Editor.Extensions;
+using UnityEditor;
 using UnityEngine;
 
 namespace MichisMeshMakers.Editor.OctagonCreator
 {
+    [Serializable]
     public class OctagonCreatorCanvas
     {
         private Texture2D _texture;
@@ -16,7 +19,19 @@ namespace MichisMeshMakers.Editor.OctagonCreator
         {
             var canvasGridMaterial = Assets.MaterialInstances.CanvasGrid;
             canvasGridMaterial.SetVector(Ids.MaterialProperties.RectSize, canvasRect.size);
-            EditorGUI.DrawPreviewTexture(canvasRect, Assets.Textures.CanvasGrid, canvasGridMaterial, ScaleMode.StretchToFill);
+
+            if (Event.current.type == EventType.Repaint)
+            {
+                EditorGUI.DrawPreviewTexture(canvasRect, Assets.Textures.CanvasGrid, canvasGridMaterial, ScaleMode.StretchToFill);
+
+                if (_texture != null)
+                {
+                    Rect textureRect = canvasRect.Center(_texture.GetSize());
+                    var additive = Assets.MaterialInstances.Additive;
+                    additive.SetTexture("_MainTex", _texture);
+                    EditorGUI.DrawPreviewTexture(textureRect, _texture, additive, ScaleMode.StretchToFill);
+                }
+            }
 
             if (Event.current.type != EventType.Layout)
             {

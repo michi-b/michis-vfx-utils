@@ -11,10 +11,9 @@ Shader "Hidden/MichisMeshMakers/CanvasGrid"
     {
         Tags
         {
-            "RenderType"="Transparent"
-            "Queue"="Transparent"
+            "RenderType"="Opaque"
+            "Queue"="Geometry"
         }
-        LOD 100
 
         Pass
         {
@@ -24,10 +23,12 @@ Shader "Hidden/MichisMeshMakers/CanvasGrid"
 
             #include "UnityCG.cginc"
 
+            CBUFFER_START(UnityPerMaterial)
             float4 _EvenColor;
             float4 _UnevenColor;
             float2 _RectSize;
             float _CellSize;
+            CBUFFER_END
 
             struct appdata
             {
@@ -41,17 +42,17 @@ Shader "Hidden/MichisMeshMakers/CanvasGrid"
                 float2 uv : TEXCOORD0;
             };
 
-            float invLerp(const float from, const float to, const float value)
-            {
-                return (value - from) / (to - from);
-            }
-
             v2f vert(const appdata v)
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = v.uv;
                 return o;
+            }
+
+            float invLerp(const float from, const float to, const float value)
+            {
+                return (value - from) / (to - from);
             }
 
             float3 toLinear(const float3 color)
@@ -61,7 +62,7 @@ Shader "Hidden/MichisMeshMakers/CanvasGrid"
                                                float3(2.4, 2.4, 2.4));
                 return float3(color <= 0.04045) ? linearRgbLo : linearRgbHi;
             }
-            
+
             float3 toGamma(const float3 color)
             {
                 float3 sRgbLo = color * 12.92;
@@ -70,7 +71,7 @@ Shader "Hidden/MichisMeshMakers/CanvasGrid"
                 return float3(color <= 0.0031308) ? sRgbLo : sRgbHi;
             }
 
-            fixed4 frag(v2f i) : SV_Target
+            fixed4 frag(const v2f i) : SV_Target
             {
                 const float2 uv = i.uv - 0.5f;
                 const float2 pixel = uv * _RectSize; // Transform from [0,1] to screen space
@@ -88,7 +89,7 @@ Shader "Hidden/MichisMeshMakers/CanvasGrid"
                 const float mainWeight = saturate(1.0f - invLerp(from, to, longDistance));
 
                 //evaluate main and secondary color
-                const int2 cellIndex = floor(cell);
+                const uint2 cellIndex = abs(floor(cell));
                 const bool isEven = (cellIndex.x + cellIndex.y) % 2 == 0;
                 const fixed4 mainColor = isEven ? _EvenColor : _UnevenColor;
                 const fixed4 secondaryColor = isEven ? _UnevenColor : _EvenColor;

@@ -14,3 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _materials:
     _white: {fileID: 2100000, guid: 6521680f5968e0846a8a50bf5d260579, type: 2}
+  _materialInstances:
+    _canvasGrid: {fileID: 2100000, guid: f012056ad4e744f45a0df39e8cad6f37, type: 2}
+    _additive: {fileID: 2100000, guid: e4c036035df0780468a684c5f7a60e87, type: 2}
+  _textures:
+    _canvasGrid: {fileID: 2800000, guid: 68946d770b3cdc64e93ca6c2d3e208c5, type: 3}
