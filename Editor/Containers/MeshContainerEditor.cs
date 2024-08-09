@@ -56,10 +56,8 @@ namespace MichisMeshMakers.Editor.Containers
             };
             AssetDatabase.CreateAsset(meshContainer, path);
             AssetDatabase.AddObjectToAsset(childMesh, meshContainer);
-            AssetDatabaseUtility.ForceSaveAsset(meshContainer, true);
-            
-            Undo.RecordObject(meshContainer, "Initialize Mesh Container");
             meshContainer.Initialize(creationTarget, childMesh);
+            AssetDatabaseUtility.ForceSaveAsset(meshContainer);
 
             // select the newly created Parent Asset in the Project Window
             Selection.activeObject = meshContainer;
