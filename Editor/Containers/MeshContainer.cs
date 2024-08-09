@@ -1,5 +1,4 @@
 ﻿using System;
-using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -7,22 +6,15 @@ namespace MichisMeshMakers.Editor.Containers
 {
     public class MeshContainer : ScriptableObject
     {
+        public const string MeshFieldName = nameof(_mesh);
+        
         [SerializeField] private Mesh _mesh;
 
-        public Mesh Mesh
+        public virtual void Initialize(Object selection, Mesh childMesh)
         {
-            get => _mesh;
-            set => _mesh = value;
-        }
-
-        public virtual void Initialize(Object selection)
-        {
-            _mesh = new Mesh
-            {
-                name = "Generated Mesh",
-                vertices = Array.Empty<Vector3>(),
-                triangles = Array.Empty<int>()
-            };
+            _mesh = childMesh;
+            _mesh.vertices = Array.Empty<Vector3>();
+            _mesh.triangles = Array.Empty<int>();
             _mesh.RecalculateNormals();
             _mesh.RecalculateBounds();
         }

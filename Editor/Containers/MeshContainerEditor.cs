@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using MichisMeshMakers.Editor.Utility;
 using UnityEditor;
 using UnityEngine;
@@ -10,65 +9,58 @@ namespace MichisMeshMakers.Editor.Containers
     [CustomEditor(typeof(MeshContainer))]
     public class MeshContainerEditor<TMeshContainer> : UnityEditor.Editor where TMeshContainer : MeshContainer
     {
-        public override void OnInspectorGUI()
+        private SerializedProperty _meshProperty;
+
+        protected virtual void OnEnable()
         {
-            // foreach (var targetObject in targets)
-            // {
-            //     var meshContainer = (MeshContainer) targetObject;
-            //     if (meshContainer.Mesh == null)
-            //     {
-            //         Undo.RecordObject(meshContainer, "Create Initial Mesh");
-            //         meshContainer.InitializeMesh();
-            //         AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
-            //     }
-            // }
-            base.OnInspectorGUI();
+            _meshProperty = serializedObject.FindProperty(MeshContainer.MeshFieldName);
         }
 
-        
-        
-        protected static TMeshContainer CreateAsset(string assetName, Func<string, Object> getCreationTarget)
+        public override void OnInspectorGUI()
         {
-            var meshContainer = CreateInstance<TMeshContainer>();
-            
-            meshContainer.name = assetName;
+            using (new EditorGUI.DisabledScope(true))
+            {
+                EditorGUILayout.PropertyField(_meshProperty);
+            }
 
+            // foreach (Object targetObject in targets)
+            // {
+            //     var meshContainer = (MeshContainer)targetObject;
+            //     if (meshContainer.Mesh == null)
+            //     {
+            //         Undo.RecordObject(meshContainer, "Assign missing mesh container mesh");
+            //         var mesh = AssetDatabase.LoadAssetAtPath<Mesh>(AssetDatabase.GetAssetPath(meshContainer));
+            //         meshContainer.Mesh = mesh;
+            //         AssetDatabaseUtility.ForceSaveAsset(meshContainer);
+            //     }
+            // }
+
+            // base.OnInspectorGUI();
+        }
+
+
+        protected static void Create(string assetName, Func<string, Object> getCreationTarget)
+        {
             Object selection = Selection.activeObject;
             Object creationTarget = getCreationTarget(AssetDatabase.GetAssetPath(selection));
 
-            string creationTargetName = creationTarget != null 
-                ? Path.GetFileNameWithoutExtension(AssetDatabase.GetAssetPath(creationTarget)) 
-                : null;
-            
-            string fileName = AssetDatabaseUtility.GetDependentFilename(creationTargetName, assetName);
+            assetName = creationTarget != null ? creationTarget.name : AssetDatabase.Contains(selection) ? selection.name : assetName;
 
-            string path = AssetDatabaseUtility.GetCreateAssetPath(fileName);
-            
-            AssetDatabase.CreateAsset(meshContainer, path);
+            string path = AssetDatabaseUtility.GetCreateAssetPath(assetName);
 
+            var meshContainer = CreateInstance<TMeshContainer>();
+            meshContainer.name = assetName;
             var childMesh = new Mesh
             {
-                vertices = Array.Empty<Vector3>(),
-                triangles = Array.Empty<int>(),
-                name = creationTargetName ?? assetName
+                name = assetName
             };
-
-            // Save Child Mesh as a sub-asset of the parent asset
+            AssetDatabase.CreateAsset(meshContainer, path);
             AssetDatabase.AddObjectToAsset(childMesh, meshContainer);
-            AssetDatabase.SaveAssets();
+            AssetDatabaseUtility.ForceSaveAsset(meshContainer, true);
+            meshContainer.Initialize(creationTarget, childMesh);
 
-            // Link Child Mesh to Parent Asset
-            Undo.RecordObject(meshContainer, "Initialize Mesh Container Mesh");
-            meshContainer.Mesh = childMesh;
-            meshContainer.Initialize(selection);
-
-            // Save and refresh the AssetDatabase
-            AssetDatabase.SaveAssets();
-            AssetDatabaseUtility.ForceInstantRefresh();
-
-            // Select the newly created Parent Asset in the Project Window
+            // select the newly created Parent Asset in the Project Window
             Selection.activeObject = meshContainer;
-            return meshContainer;
         }
     }
 }

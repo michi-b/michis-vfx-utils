@@ -1,6 +1,4 @@
-﻿using System;
-using MichisMeshMakers.Editor.Utility;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -15,7 +13,7 @@ namespace MichisMeshMakers.Editor.Containers
         [MenuItem(Menu.CreateAssetPath + AssetMenuName)]
         public static void CreateParentAssetWithMesh()
         {
-            CreateAsset(AssetFileName, GetCreationTarget);
+            Create(AssetFileName, GetCreationTarget);
         }
         
         private static Object GetCreationTarget(string selectionPath)

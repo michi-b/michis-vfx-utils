@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using MichisMeshMakers.Editor.Containers;
 using UnityEditor;
 
 namespace MichisMeshMakers.Editor.Utility
@@ -12,13 +13,18 @@ namespace MichisMeshMakers.Editor.Utility
 
         public static string GetCreateAssetPath(string assetName)
         {
-            // Create Parent Asset
-            return AssetDatabase.GenerateUniqueAssetPath(Path.Combine(SelectionUtility.GetActiveFolder(), $"{assetName}.asset"));
+            string activeFolder = SelectionUtility.GetActiveFolder();
+            return AssetDatabase.GenerateUniqueAssetPath(Path.Combine(activeFolder, $"{assetName}.asset"));
         }
 
-        public static string GetDependentFilename(string originName, string individualName)
+        public static void ForceSaveAsset(MeshContainer meshContainer, bool instantRefresh = false)
         {
-            return originName == null ? individualName : $"{originName}_{individualName}";
+            EditorUtility.SetDirty(meshContainer);
+            AssetDatabase.SaveAssetIfDirty(meshContainer);
+            if (instantRefresh)
+            {
+                ForceInstantRefresh();
+            }
         }
     }
 }
