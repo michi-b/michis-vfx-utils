@@ -1,4 +1,6 @@
-﻿using UnityEditor;
+﻿using System.Globalization;
+using MichisMeshMakers.Editor.Utility;
+using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -9,6 +11,24 @@ namespace MichisMeshMakers.Editor.Containers
     {
         private const string AssetMenuName = "Octagon Mesh";
         private const string AssetFileName = "OctagonMesh";
+        
+        private SerializedProperty _axisLengthProperty;
+        private SerializedProperty _diagonalLengthProperty;
+        
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            _axisLengthProperty = serializedObject.FindProperty(OctagonMesh.AxisLengthFieldName);
+            _diagonalLengthProperty = serializedObject.FindProperty(OctagonMesh.DiagonalLengthFieldName);
+        }
+
+        protected override void DrawBeforePreview()
+        {
+            base.DrawBeforePreview();
+            
+            EditorGUILayout.PropertyField(_axisLengthProperty);
+            EditorGUILayout.PropertyField(_diagonalLengthProperty);
+        }
 
         [MenuItem(Menu.CreateAssetPath + AssetMenuName)]
         public static void CreateParentAssetWithMesh()
