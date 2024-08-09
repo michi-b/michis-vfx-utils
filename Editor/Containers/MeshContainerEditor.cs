@@ -7,7 +7,7 @@ using Object = UnityEngine.Object;
 namespace MichisMeshMakers.Editor.Containers
 {
     [CustomEditor(typeof(MeshContainer))]
-    public class MeshContainerEditor<TMeshContainer> : UnityEditor.Editor where TMeshContainer : MeshContainer
+    public abstract class MeshContainerEditor<TMeshContainer> : UnityEditor.Editor where TMeshContainer : MeshContainer
     {
         private SerializedProperty _meshProperty;
 
@@ -20,7 +20,7 @@ namespace MichisMeshMakers.Editor.Containers
         {
             using (new EditorGUI.DisabledScope(true))
             {
-                EditorGUILayout.PropertyField(_meshProperty);
+                EditorGUILayout.PropertyField(_meshProperty, MeshContainerLabels.GeneratedMesh);
             }
 
             // foreach (Object targetObject in targets)
@@ -57,6 +57,8 @@ namespace MichisMeshMakers.Editor.Containers
             AssetDatabase.CreateAsset(meshContainer, path);
             AssetDatabase.AddObjectToAsset(childMesh, meshContainer);
             AssetDatabaseUtility.ForceSaveAsset(meshContainer, true);
+            
+            Undo.RecordObject(meshContainer, "Initialize Mesh Container");
             meshContainer.Initialize(creationTarget, childMesh);
 
             // select the newly created Parent Asset in the Project Window

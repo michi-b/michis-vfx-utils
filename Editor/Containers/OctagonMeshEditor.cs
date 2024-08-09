@@ -5,7 +5,7 @@ using Object = UnityEngine.Object;
 namespace MichisMeshMakers.Editor.Containers
 {
     [CustomEditor(typeof(OctagonMesh))]
-    public class OctagonMeshEditor : MeshContainerEditor<OctagonMesh>
+    public class OctagonMeshEditor : TextureBasedMeshContainerEditor<OctagonMesh>
     {
         private const string AssetMenuName = "Octagon Mesh";
         private const string AssetFileName = "OctagonMesh";

@@ -1,9 +1,9 @@
-﻿using UnityEngine;
-
-namespace MichisMeshMakers.Editor.Containers
+﻿namespace MichisMeshMakers.Editor.Containers
 {
-    public class OctagonMesh : MeshContainer
+    public class OctagonMesh : TextureBasedMeshContainer
     {
-        
+        protected override void Initialize()
+        {
+        }
     }
 }
