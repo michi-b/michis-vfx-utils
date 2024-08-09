@@ -22,9 +22,9 @@ namespace MichisMeshMakers.Editor.Containers
             _diagonalLengthProperty = serializedObject.FindProperty(OctagonMesh.DiagonalLengthFieldName);
         }
 
-        protected override void DrawBeforePreview()
+        protected override void DrawProperties()
         {
-            base.DrawBeforePreview();
+            base.DrawProperties();
             
             EditorGUILayout.PropertyField(_axisLengthProperty);
             EditorGUILayout.PropertyField(_diagonalLengthProperty);

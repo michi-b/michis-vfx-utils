@@ -15,29 +15,17 @@ namespace MichisMeshMakers.Editor.Containers
             _textureProperty = serializedObject.FindProperty(TextureBasedMeshContainer.TextureFieldName);
         }
 
-        public override void OnInspectorGUI()
+        protected override void DrawProperties()
         {
-            base.OnInspectorGUI();
+            base.DrawProperties();
             EditorGUILayout.PropertyField(_textureProperty, MeshContainerLabels.SourceTexture);
-
-            DrawBeforePreview();
-
-            using (new GUILayout.VerticalScope())
-            {
-                float width = EditorGUIUtility.currentViewWidth - 35;
-                Rect previewRect = GUILayoutUtility.GetRect(width, width, GUILayout.ExpandWidth(false));
-
-                if (Event.current.type == EventType.Repaint)
-                {
-                    Material canvasGridMaterial = Assets.MaterialInstances.CanvasGrid;
-                    canvasGridMaterial.SetVector(Ids.MaterialProperties.RectSize, new Vector2(width, width));
-                    EditorGUI.DrawPreviewTexture(previewRect, Assets.Textures.CanvasGrid, canvasGridMaterial, ScaleMode.ScaleAndCrop);
-                }
-            }
         }
 
-        protected virtual void DrawBeforePreview()
+        protected override void DrawMeshPreview(Rect rect)
         {
+            Material canvasGridMaterial = Assets.MaterialInstances.CanvasGrid;
+            canvasGridMaterial.SetVector(Ids.MaterialProperties.RectSize, new Vector2(rect.width, rect.height));
+            EditorGUI.DrawPreviewTexture(rect, Assets.Textures.CanvasGrid, canvasGridMaterial, ScaleMode.ScaleAndCrop);
         }
     }
 }

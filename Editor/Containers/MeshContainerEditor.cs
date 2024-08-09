@@ -16,27 +16,42 @@ namespace MichisMeshMakers.Editor.Containers
             _meshProperty = serializedObject.FindProperty(MeshContainer.MeshFieldName);
         }
 
-        public override void OnInspectorGUI()
+        public sealed override void OnInspectorGUI()
+        {
+            DrawProperties();
+            
+            foreach (Object targetObject in targets)
+            {
+                var meshContainer = (MeshContainer)targetObject;
+                Mesh mesh = meshContainer.Mesh;
+                if (!string.Equals(mesh.name, meshContainer.name, StringComparison.Ordinal))
+                {
+                    Undo.RecordObject(mesh, "Synchronize Mesh Container Mesh Name");
+                    mesh.name = meshContainer.name;
+                    EditorUtility.SetDirty(mesh);
+                    AssetDatabase.SaveAssetIfDirty(mesh);
+                }
+            }
+
+            float width = EditorGUIUtility.currentViewWidth - 35;
+            Rect previewRect = GUILayoutUtility.GetRect(width, width, GUILayout.ExpandWidth(false));
+            if (Event.current.type == EventType.Repaint)
+            {
+                DrawMeshPreview(previewRect);
+            }
+        }
+
+        protected virtual void DrawProperties()
         {
             using (new EditorGUI.DisabledScope(true))
             {
                 EditorGUILayout.PropertyField(_meshProperty, MeshContainerLabels.GeneratedMesh);
             }
-
-            // foreach (Object targetObject in targets)
-            // {
-            //     var meshContainer = (MeshContainer)targetObject;
-            //     if (meshContainer.Mesh == null)
-            //     {
-            //         Undo.RecordObject(meshContainer, "Assign missing mesh container mesh");
-            //         var mesh = AssetDatabase.LoadAssetAtPath<Mesh>(AssetDatabase.GetAssetPath(meshContainer));
-            //         meshContainer.Mesh = mesh;
-            //         AssetDatabaseUtility.ForceSaveAsset(meshContainer);
-            //     }
-            // }
-
-            // base.OnInspectorGUI();
         }
+
+        protected abstract void DrawMeshPreview(Rect rect);
+        
+        
 
 
         protected static void Create(string assetName, Func<string, Object> getCreationTarget)

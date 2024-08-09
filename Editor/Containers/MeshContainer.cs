@@ -10,7 +10,7 @@ namespace MichisMeshMakers.Editor.Containers
         
         [SerializeField] private Mesh _mesh;
 
-        protected Mesh Mesh => _mesh;
+        public Mesh Mesh => _mesh;
         
         public void Initialize(Object selection, Mesh childMesh)
         {
