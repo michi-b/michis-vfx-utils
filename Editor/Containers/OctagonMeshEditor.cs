@@ -1,11 +1,10 @@
-﻿using System.Globalization;
-using MichisMeshMakers.Editor.Utility;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace MichisMeshMakers.Editor.Containers
 {
+    [CanEditMultipleObjects]
     [CustomEditor(typeof(OctagonMesh))]
     public class OctagonMeshEditor : TextureBasedMeshContainerEditor<OctagonMesh>
     {

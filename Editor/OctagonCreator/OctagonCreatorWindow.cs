@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace MichisMeshMakers.Editor.OctagonCreator
 {
-    public class OctagonCreatorWindow : Window
+    public class OctagonCreatorWindow : MichisMeshMakerWindow
     {
         private const string Title = "Octagon Creator";
 

@@ -1,9 +1,11 @@
 ﻿namespace MichisMeshMakers.Editor
 {
-    public class Menu
+    public static class Menu
     {
-        private const string Path = "Michis Mesh Makers/";
+        public const string Name = "Michi's Mesh Makers";
+        private const string Path = Name + "/";
         public const string CreateAssetPath = "Assets/Create/" + Path;
         public const string WindowPath = "Window/" + Path;
+        public const string Tools = "Tools/" + Path;
     }
 }

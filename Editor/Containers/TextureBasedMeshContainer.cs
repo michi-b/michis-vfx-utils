@@ -10,6 +10,8 @@ namespace MichisMeshMakers.Editor.Containers
         
         [SerializeField] private Texture2D _texture;
 
+        public Texture2D Texture => _texture;
+        
         protected override void Initialize(Object selection)
         {
             _texture = selection as Texture2D;

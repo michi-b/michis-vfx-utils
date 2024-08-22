@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace MichisMeshMakers.Editor
 {
-    public abstract class Window : EditorWindow
+    public abstract class MichisMeshMakerWindow : EditorWindow
     {
         private static int _windowCount;
         [PublicAPI] public static GuiStyles Styles { get; private set; }
@@ -34,7 +34,7 @@ namespace MichisMeshMakers.Editor
             Styles = null;
         }
 
-        public SettingsScope CreateSettingsScope()
+        protected SettingsScope CreateSettingsScope()
         {
             return new SettingsScope(this);
         }
@@ -68,7 +68,7 @@ namespace MichisMeshMakers.Editor
             private readonly GUILayout.ScrollViewScope _scrollScope;
             private readonly EditorGUILayout.VerticalScope _settingsScope;
 
-            public SettingsScope(Window window)
+            public SettingsScope(MichisMeshMakerWindow window)
             {
                 _settingsScope = new EditorGUILayout.VerticalScope(Styles.SettingsBlock, GUILayout.Width(SettingsScopeWidth), GUILayout.ExpandHeight(true));
                 EditorGUI.BeginChangeCheck();

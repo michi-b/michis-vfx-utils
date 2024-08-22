@@ -1,4 +1,5 @@
 ﻿using System;
+using JetBrains.Annotations;
 using MichisMeshMakers.Editor.Utility;
 using UnityEditor;
 using UnityEngine;
@@ -11,15 +12,29 @@ namespace MichisMeshMakers.Editor.Containers
     {
         private SerializedProperty _meshProperty;
 
+        [PublicAPI]
+        protected TMeshContainer Target { get; private set; }
+        
+        [PublicAPI]
+        protected TMeshContainer[] Targets { get; private set; }
+        
+        [PublicAPI]
+        protected static readonly Vector3[] TriangleVertexCache = new Vector3[3];
+
+        [PublicAPI]
+        protected static readonly int[] TriangleLineIndices = {0, 1, 1, 2, 2, 0};
+
         protected virtual void OnEnable()
         {
             _meshProperty = serializedObject.FindProperty(MeshContainer.MeshFieldName);
+            Target = (TMeshContainer)target;
+            Targets = Array.ConvertAll(targets, t => (TMeshContainer)t);
         }
 
         public sealed override void OnInspectorGUI()
         {
             DrawProperties();
-            
+
             foreach (Object targetObject in targets)
             {
                 var meshContainer = (MeshContainer)targetObject;
@@ -33,11 +48,14 @@ namespace MichisMeshMakers.Editor.Containers
                 }
             }
 
-            float width = EditorGUIUtility.currentViewWidth - 35;
-            Rect previewRect = GUILayoutUtility.GetRect(width, width, GUILayout.ExpandWidth(false));
-            if (Event.current.type == EventType.Repaint)
+            foreach (TMeshContainer t in Targets)
             {
-                DrawMeshPreview(previewRect);
+                float width = EditorGUIUtility.currentViewWidth - 35;
+                Rect previewRect = GUILayoutUtility.GetRect(width, width, GUILayout.ExpandWidth(false));
+                if (Event.current.type == EventType.Repaint)
+                {
+                    DrawMeshPreview(previewRect, t);
+                }
             }
         }
 
@@ -49,10 +67,7 @@ namespace MichisMeshMakers.Editor.Containers
             }
         }
 
-        protected abstract void DrawMeshPreview(Rect rect);
-        
-        
-
+        protected abstract void DrawMeshPreview(Rect rect, TMeshContainer meshContainer);
 
         protected static void Create(string assetName, Func<string, Object> getCreationTarget)
         {
