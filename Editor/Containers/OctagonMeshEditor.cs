@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using System;
+using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -25,8 +26,19 @@ namespace MichisMeshMakers.Editor.Containers
         {
             base.DrawProperties();
             
+            EditorGUI.BeginChangeCheck();
             EditorGUILayout.PropertyField(_axisLengthProperty);
             EditorGUILayout.PropertyField(_diagonalLengthProperty);
+            if (EditorGUI.EndChangeCheck())
+            {
+                serializedObject.ApplyModifiedProperties();
+                foreach (OctagonMesh octagonMesh in Targets)
+                {
+                    Undo.RecordObject(octagonMesh.Mesh, "Regenerate Octagon Mesh");
+                    octagonMesh.RegenerateMesh();
+                    // octagonMesh.Mesh.SetIndices(Array.Empty<int>(), MeshTopology.Triangles, 0);
+                }
+            }
         }
 
         [MenuItem(Menu.CreateAssetPath + AssetMenuName)]

@@ -8,25 +8,28 @@ namespace MichisMeshMakers.Editor.Containers
         public const string AxisLengthFieldName = "_axisLength";
         public const string DiagonalLengthFieldName = "_diagonalLength";
 
+        private const int SimpleOctagonVertexCount = 8;
+        private const int SimpleOctagonIndexCount = 6 * 3;
+
+        private static readonly Vector3[] Vertices = new Vector3[SimpleOctagonVertexCount]; // 8 corners for an octagon
+        private static readonly int[] Indices = new int[SimpleOctagonIndexCount]; // 6 faces with 3 vertices each
+
         [SerializeField] [Range(0f, 1f)] private float _axisLength = 1f;
 
         [SerializeField] [Range(0f, Constants.SqrtOf2)]
         private float _diagonalLength = 1f;
 
-        private readonly Vector3[] _vertices = new Vector3[8]; // 8 corners for an octagon
-        private readonly int[] _indices = new int[6 * 3]; // 6 faces with 3 vertices each
-
         protected override void Initialize()
         {
-            GenerateMesh();
+            RegenerateMesh();
         }
 
         private void SetVertex(int index, float x, float y)
         {
-            _vertices[index] = new Vector3(x, y, 0f);
+            Vertices[index] = new Vector3(x, y, 0f);
         }
 
-        private void GenerateMesh()
+        public void RegenerateMesh()
         {
             const int bottomLeft = 0;
             const int left = 1;
@@ -52,39 +55,38 @@ namespace MichisMeshMakers.Editor.Containers
             int i = 0;
 
             // inner top left
-            _indices[i++] = bottomLeft;
-            _indices[i++] = topLeft;
-            _indices[i++] = topRight;
+            Indices[i++] = bottomLeft;
+            Indices[i++] = topLeft;
+            Indices[i++] = topRight;
 
             // left
-            _indices[i++] = bottomLeft;
-            _indices[i++] = left;
-            _indices[i++] = topLeft;
+            Indices[i++] = bottomLeft;
+            Indices[i++] = left;
+            Indices[i++] = topLeft;
 
             // top
-            _indices[i++] = topLeft;
-            _indices[i++] = top;
-            _indices[i++] = topRight;
+            Indices[i++] = topLeft;
+            Indices[i++] = top;
+            Indices[i++] = topRight;
 
             // inner bottom right
-            _indices[i++] = topRight;
-            _indices[i++] = bottomRight;
-            _indices[i++] = bottomLeft;
+            Indices[i++] = topRight;
+            Indices[i++] = bottomRight;
+            Indices[i++] = bottomLeft;
 
             // right
-            _indices[i++] = topRight;
-            _indices[i++] = right;
-            _indices[i++] = bottomRight;
+            Indices[i++] = topRight;
+            Indices[i++] = right;
+            Indices[i++] = bottomRight;
 
             // bottom
-            _indices[i++] = bottomRight;
-            _indices[i++] = bottom;
-            _indices[i++] = bottomLeft;
+            Indices[i++] = bottomRight;
+            Indices[i++] = bottom;
+            Indices[i++] = bottomLeft;
 
-            Mesh.SetVertices(_vertices);
-            Mesh.SetIndices(_indices, MeshTopology.Triangles, 0);
+            Mesh.SetVertices(Vertices, 0, SimpleOctagonVertexCount);
+            Mesh.SetIndices(Indices, 0, SimpleOctagonIndexCount, MeshTopology.Triangles, 0);
             Mesh.Optimize();
-            Mesh.RecalculateBounds(MeshUpdateFlags.DontValidateIndices);
             Mesh.UploadMeshData(true);
         }
     }

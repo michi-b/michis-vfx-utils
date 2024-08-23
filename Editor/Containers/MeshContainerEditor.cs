@@ -17,12 +17,6 @@ namespace MichisMeshMakers.Editor.Containers
         
         [PublicAPI]
         protected TMeshContainer[] Targets { get; private set; }
-        
-        [PublicAPI]
-        protected static readonly Vector3[] TriangleVertexCache = new Vector3[3];
-
-        [PublicAPI]
-        protected static readonly int[] TriangleLineIndices = {0, 1, 1, 2, 2, 0};
 
         protected virtual void OnEnable()
         {

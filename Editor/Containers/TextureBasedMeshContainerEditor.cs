@@ -60,22 +60,20 @@ namespace MichisMeshMakers.Editor.Containers
             }
 
             Handles.BeginGUI();
-            using (new Handles.DrawingScope())
+
+            Handles.color = Color.white;
+            int triangleCount = mesh.triangles.Length / 3;
+            for (int i = 0; i < triangleCount; i++)
             {
-                Handles.color = Color.white;
-                int triangleCount = mesh.triangles.Length / 3;
-                for (int i = 0; i < triangleCount; i++)
-                {
-                    int startIndex = i * 3;
-                    TriangleVertexCache[0] = ConvertPoint(mesh.vertices[mesh.triangles[startIndex]]);
-                    TriangleVertexCache[1] = ConvertPoint(mesh.vertices[mesh.triangles[startIndex + 1]]);
-                    TriangleVertexCache[2] = ConvertPoint(mesh.vertices[mesh.triangles[startIndex + 2]]);
-                    Handles.DrawLines(TriangleVertexCache, TriangleLineIndices);
-                }
+                int startIndex = i * 3;
+                Arrays.Temporary.TriangleVertexCache[0] = ConvertPoint(mesh.vertices[mesh.triangles[startIndex]]);
+                Arrays.Temporary.TriangleVertexCache[1] = ConvertPoint(mesh.vertices[mesh.triangles[startIndex + 1]]);
+                Arrays.Temporary.TriangleVertexCache[2] = ConvertPoint(mesh.vertices[mesh.triangles[startIndex + 2]]);
+                Handles.DrawLines(Arrays.Temporary.TriangleVertexCache, Arrays.TriangleLineIndices);
             }
-
+            
             Handles.EndGUI();
-
+            
             SceneView.RepaintAll();
 
             return;
