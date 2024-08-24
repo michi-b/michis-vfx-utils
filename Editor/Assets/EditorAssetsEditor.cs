@@ -3,9 +3,20 @@ using UnityEngine;
 
 namespace MichisMeshMakers.Editor.Assets
 {
+    [InitializeOnLoad]
     [CustomEditor(typeof(EditorAssets))]
     public class EditorAssetsEditor : UnityEditor.Editor
     {
+        static EditorAssetsEditor()
+        {
+            EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
+        }
+
+        private static void OnPlayModeStateChanged(PlayModeStateChange obj)
+        {
+            EditorAssets.Load().ReloadMaterialInstances(false);
+        }
+
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();

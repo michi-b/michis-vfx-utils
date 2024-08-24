@@ -2,6 +2,7 @@
 using JetBrains.Annotations;
 using MichisMeshMakers.Editor.Utility;
 using UnityEditor;
+using UnityEditor.SearchService;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -12,11 +13,9 @@ namespace MichisMeshMakers.Editor.Containers
     {
         private SerializedProperty _meshProperty;
 
-        [PublicAPI]
-        protected TMeshContainer Target { get; private set; }
-        
-        [PublicAPI]
-        protected TMeshContainer[] Targets { get; private set; }
+        [PublicAPI] protected TMeshContainer Target { get; private set; }
+
+        [PublicAPI] protected TMeshContainer[] Targets { get; private set; }
 
         protected virtual void OnEnable()
         {
@@ -35,10 +34,17 @@ namespace MichisMeshMakers.Editor.Containers
                 Mesh mesh = meshContainer.Mesh;
                 if (!string.Equals(mesh.name, meshContainer.name, StringComparison.Ordinal))
                 {
-                    Undo.RecordObject(mesh, "Synchronize Mesh Container Mesh Name");
-                    mesh.name = meshContainer.name;
-                    EditorUtility.SetDirty(mesh);
-                    AssetDatabase.SaveAssetIfDirty(mesh);
+                    // Delay the renaming of the mesh to after the gui update to avoid Unity logging a warning
+                    // todo: Ensure that child renaming shows up instantly in the project window
+                    // Currently it only shows up after changing the view there 
+                    EditorApplication.delayCall += () =>
+                    {
+                        Undo.RecordObject(mesh, "Synchronize Mesh Container Mesh Name");
+                        mesh.name = meshContainer.name;
+                        EditorUtility.SetDirty(mesh);
+                        AssetDatabase.SaveAssetIfDirty(mesh);
+                        AssetDatabase.Refresh();
+                    };
                 }
             }
 

@@ -26,18 +26,19 @@ namespace MichisMeshMakers.Editor.Assets
                 var assets = AssetDatabase.LoadAssetAtPath<EditorAssets>(AssetDatabase.GUIDToAssetPath(path));
                 if (assets != null)
                 {
-                    assets._materialInstances.Load();
                     return assets;
                 }
             }
-            
             throw new Exception($"{Menu.Name} could not find editor assets.");
         }
 
-        public void ReloadMaterialInstances()
+        public void ReloadMaterialInstances(bool logMessage = false)
         {
-            _materialInstances.Load();
-            Debug.Log($"{Menu.Name} reloaded editor material instances.");
+            _materialInstances.ClearCache();
+            if (logMessage)
+            {
+                Debug.Log($"{Menu.Name} reloaded editor material instances.");
+            }
         }
     }
 }
