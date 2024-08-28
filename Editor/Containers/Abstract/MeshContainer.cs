@@ -1,13 +1,13 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace MichisMeshMakers.Editor.Containers
+namespace MichisMeshMakers.Editor.Containers.Abstract
 {
     public abstract class MeshContainer : ScriptableObject
     {
         public const string MeshFieldName = nameof(_mesh);
-        
+        public const string StatisticsFieldName = nameof(_statistics);
+
         [SerializeField] private Mesh _mesh;
         [SerializeField] private MeshStatistics _statistics;
         

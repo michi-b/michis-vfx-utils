@@ -3,39 +3,28 @@ using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace MichisMeshMakers.Editor.Containers
+namespace MichisMeshMakers.Editor.Containers.Abstract
 {
     [CustomEditor(typeof(MeshContainer))]
-    public abstract class MeshContainerEditor : UnityEditor.Editor
+    public abstract class MeshContainerEditorBase : UnityEditor.Editor
     {
         private SerializedProperty _meshProperty;
-
-        static MeshContainerEditor()
-        {
-            Undo.undoRedoPerformed += OnUndoRedoPerformed;
-        }
+        private SerializedProperty _statisticsProperty;
+        private MeshContainer[] _targetMeshContainers;
 
         protected virtual void OnEnable()
         {
-            _meshProperty = serializedObject.FindProperty(MeshContainer.MeshFieldName);
-        }
+            _targetMeshContainers = new MeshContainer[targets.Length];
+            for (int i = 0; i < targets.Length; i++) _targetMeshContainers[i] = (MeshContainer)targets[i];
 
-        private static void OnUndoRedoPerformed()
-        {
-            int affectedObjects = Undo.GetCurrentGroup();
-            foreach (Object obj in Selection.objects)
-            {
-                if (obj is MeshContainer meshContainer)
-                {
-                    meshContainer.Apply();
-                }
-            }
+            _meshProperty = serializedObject.FindProperty(MeshContainer.MeshFieldName);
+            _statisticsProperty = serializedObject.FindProperty(MeshContainer.StatisticsFieldName);
         }
 
         public sealed override void OnInspectorGUI()
         {
             serializedObject.Update();
-            
+
             foreach (Object targetObject in targets)
             {
                 var meshContainer = (MeshContainer)targetObject;
@@ -55,11 +44,11 @@ namespace MichisMeshMakers.Editor.Containers
                     };
                 }
             }
-            
+
             DrawProperties();
-            
+
             // draw mesh previews
-            foreach (Object targetObject in targets)
+            foreach (MeshContainer targetObject in _targetMeshContainers)
             {
                 float width = EditorGUIUtility.currentViewWidth - 35;
                 Rect previewRect = GUILayoutUtility.GetRect(width, width, GUILayout.ExpandWidth(false));
@@ -78,6 +67,15 @@ namespace MichisMeshMakers.Editor.Containers
             }
         }
 
-        protected abstract void DrawMeshPreview(Rect previewRect, Object targetObject);
+        protected abstract void DrawMeshPreview(Rect previewRect, MeshContainer targetMeshContainer);
+
+        protected void Apply()
+        {
+            foreach (MeshContainer targetMeshContainer in _targetMeshContainers)
+            {
+                Undo.RecordObject(targetMeshContainer.Mesh, "Apply Mesh Container");
+                targetMeshContainer.Apply();
+            }
+        }
     }
 }

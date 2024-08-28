@@ -1,4 +1,6 @@
-﻿using UnityEditor;
+﻿using MichisMeshMakers.Editor.Containers.Abstract;
+using MichisMeshMakers.Editor.Containers.Abstract.Generic;
+using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -32,7 +34,7 @@ namespace MichisMeshMakers.Editor.Containers.Generic
             if (EditorGUI.EndChangeCheck())
             {
                 serializedObject.ApplyModifiedProperties();
-                ApplyAll();
+                Apply();
             }
         }
 

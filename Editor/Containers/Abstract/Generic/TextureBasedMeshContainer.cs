@@ -2,7 +2,7 @@
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace MichisMeshMakers.Editor.Containers
+namespace MichisMeshMakers.Editor.Containers.Abstract.Generic
 {
     public abstract class TextureBasedMeshContainer : MeshContainer
     {

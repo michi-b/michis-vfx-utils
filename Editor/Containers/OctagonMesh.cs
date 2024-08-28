@@ -1,4 +1,6 @@
 ﻿using System;
+using MichisMeshMakers.Editor.Containers.Abstract;
+using MichisMeshMakers.Editor.Containers.Abstract.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 

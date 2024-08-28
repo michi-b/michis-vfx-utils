@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace MichisMeshMakers.Editor.Containers.Generic
+namespace MichisMeshMakers.Editor.Containers.Abstract.Generic
 {
     public abstract class TextureBasedMeshContainerEditor<TMeshContainer>
         : MeshContainerEditor<TMeshContainer>
@@ -44,11 +44,8 @@ namespace MichisMeshMakers.Editor.Containers.Generic
         protected virtual void DrawTexture(Rect position, Texture2D texture)
         {
             Material material = EditorAssets.MaterialInstances.Additive;
-            material.SetTexture("_MainTex", texture);
+            material.mainTexture = texture;
             EditorGUI.DrawPreviewTexture(position, texture, material, ScaleMode.StretchToFill);
-            // GUI.DrawTexture(position, texture, ScaleMode.StretchToFill, true);
-            // GUI.Draw
-            // GuiUtility.Draw(position, material);
         }
 
         protected virtual void DrawMesh(Rect position, Mesh mesh)

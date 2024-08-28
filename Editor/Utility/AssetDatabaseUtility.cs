@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using MichisMeshMakers.Editor.Containers;
+using MichisMeshMakers.Editor.Containers.Abstract;
 using UnityEditor;
 
 namespace MichisMeshMakers.Editor.Utility

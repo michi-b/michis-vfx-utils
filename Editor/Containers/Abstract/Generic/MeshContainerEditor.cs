@@ -5,9 +5,9 @@ using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace MichisMeshMakers.Editor.Containers.Generic
+namespace MichisMeshMakers.Editor.Containers.Abstract.Generic
 {
-    public abstract class MeshContainerEditor<TMeshContainer> : MeshContainerEditor where TMeshContainer : MeshContainer
+    public abstract class MeshContainerEditor<TMeshContainer> : MeshContainerEditorBase where TMeshContainer : MeshContainer
     {
         [PublicAPI] protected TMeshContainer Target { get; private set; }
 
@@ -20,9 +20,9 @@ namespace MichisMeshMakers.Editor.Containers.Generic
             Targets = Array.ConvertAll(targets, t => (TMeshContainer)t);
         }
 
-        protected override void DrawMeshPreview(Rect previewRect, Object targetObject)
+        protected override void DrawMeshPreview(Rect previewRect, MeshContainer targetMeshContainer)
         {
-            DrawMeshPreview(previewRect, (TMeshContainer)targetObject);
+            DrawMeshPreview(previewRect, (TMeshContainer)targetMeshContainer);
         }
 
         protected abstract void DrawMeshPreview(Rect rect, TMeshContainer meshContainer);
@@ -49,15 +49,6 @@ namespace MichisMeshMakers.Editor.Containers.Generic
 
             // select the newly created Parent Asset in the Project Window
             Selection.activeObject = meshContainer;
-        }
-
-        protected void ApplyAll()
-        {
-            foreach (TMeshContainer octagonMesh in Targets)
-            {
-                Undo.RecordObject(octagonMesh.Mesh, "Apply Mesh Container");
-                octagonMesh.Apply();
-            }
         }
     }
 }

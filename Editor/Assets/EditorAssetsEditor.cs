@@ -14,7 +14,7 @@ namespace MichisMeshMakers.Editor.Assets
 
         private static void OnPlayModeStateChanged(PlayModeStateChange obj)
         {
-            EditorAssets.Load().ReloadMaterialInstances(false);
+            EditorAssets.Load().ReloadMaterialInstances();
         }
 
         public override void OnInspectorGUI()
