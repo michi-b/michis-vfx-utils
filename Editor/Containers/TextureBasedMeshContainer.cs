@@ -24,10 +24,6 @@ namespace MichisMeshMakers.Editor.Containers
                 mesh.RecalculateNormals();
                 mesh.RecalculateBounds();
             }
-            Initialize();
         }
-        
-        protected abstract void Initialize();
-        
     }
 }

@@ -1,9 +1,8 @@
 ﻿using MichisMeshMakers.Editor.Assets;
-using MichisMeshMakers.Editor.Utility;
 using UnityEditor;
 using UnityEngine;
 
-namespace MichisMeshMakers.Editor.Containers
+namespace MichisMeshMakers.Editor.Containers.Generic
 {
     public abstract class TextureBasedMeshContainerEditor<TMeshContainer>
         : MeshContainerEditor<TMeshContainer>

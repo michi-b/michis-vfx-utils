@@ -1,9 +1,8 @@
-﻿using System;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace MichisMeshMakers.Editor.Containers
+namespace MichisMeshMakers.Editor.Containers.Generic
 {
     [CanEditMultipleObjects]
     [CustomEditor(typeof(OctagonMesh))]
@@ -29,15 +28,11 @@ namespace MichisMeshMakers.Editor.Containers
             EditorGUI.BeginChangeCheck();
             EditorGUILayout.PropertyField(_axisLengthProperty);
             EditorGUILayout.PropertyField(_diagonalLengthProperty);
+            
             if (EditorGUI.EndChangeCheck())
             {
                 serializedObject.ApplyModifiedProperties();
-                foreach (OctagonMesh octagonMesh in Targets)
-                {
-                    Undo.RecordObject(octagonMesh.Mesh, "Regenerate Octagon Mesh");
-                    octagonMesh.RegenerateMesh();
-                    // octagonMesh.Mesh.SetIndices(Array.Empty<int>(), MeshTopology.Triangles, 0);
-                }
+                ApplyAll();
             }
         }
 

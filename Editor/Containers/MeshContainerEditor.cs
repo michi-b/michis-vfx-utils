@@ -1,33 +1,41 @@
 ﻿using System;
-using JetBrains.Annotations;
-using MichisMeshMakers.Editor.Utility;
 using UnityEditor;
-using UnityEditor.SearchService;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace MichisMeshMakers.Editor.Containers
 {
     [CustomEditor(typeof(MeshContainer))]
-    public abstract class MeshContainerEditor<TMeshContainer> : UnityEditor.Editor where TMeshContainer : MeshContainer
+    public abstract class MeshContainerEditor : UnityEditor.Editor
     {
         private SerializedProperty _meshProperty;
 
-        [PublicAPI] protected TMeshContainer Target { get; private set; }
-
-        [PublicAPI] protected TMeshContainer[] Targets { get; private set; }
+        static MeshContainerEditor()
+        {
+            Undo.undoRedoPerformed += OnUndoRedoPerformed;
+        }
 
         protected virtual void OnEnable()
         {
             _meshProperty = serializedObject.FindProperty(MeshContainer.MeshFieldName);
-            Target = (TMeshContainer)target;
-            Targets = Array.ConvertAll(targets, t => (TMeshContainer)t);
+        }
+
+        private static void OnUndoRedoPerformed()
+        {
+            int affectedObjects = Undo.GetCurrentGroup();
+            foreach (Object obj in Selection.objects)
+            {
+                if (obj is MeshContainer meshContainer)
+                {
+                    meshContainer.Apply();
+                }
+            }
         }
 
         public sealed override void OnInspectorGUI()
         {
-            DrawProperties();
-
+            serializedObject.Update();
+            
             foreach (Object targetObject in targets)
             {
                 var meshContainer = (MeshContainer)targetObject;
@@ -47,14 +55,17 @@ namespace MichisMeshMakers.Editor.Containers
                     };
                 }
             }
-
-            foreach (TMeshContainer t in Targets)
+            
+            DrawProperties();
+            
+            // draw mesh previews
+            foreach (Object targetObject in targets)
             {
                 float width = EditorGUIUtility.currentViewWidth - 35;
                 Rect previewRect = GUILayoutUtility.GetRect(width, width, GUILayout.ExpandWidth(false));
                 if (Event.current.type == EventType.Repaint)
                 {
-                    DrawMeshPreview(previewRect, t);
+                    DrawMeshPreview(previewRect, targetObject);
                 }
             }
         }
@@ -67,30 +78,6 @@ namespace MichisMeshMakers.Editor.Containers
             }
         }
 
-        protected abstract void DrawMeshPreview(Rect rect, TMeshContainer meshContainer);
-
-        protected static void Create(string assetName, Func<string, Object> getCreationTarget)
-        {
-            Object selection = Selection.activeObject;
-            Object creationTarget = getCreationTarget(AssetDatabase.GetAssetPath(selection));
-
-            assetName = creationTarget != null ? creationTarget.name : AssetDatabase.Contains(selection) ? selection.name : assetName;
-
-            string path = AssetDatabaseUtility.GetCreateAssetPath(assetName);
-
-            var meshContainer = CreateInstance<TMeshContainer>();
-            meshContainer.name = assetName;
-            var childMesh = new Mesh
-            {
-                name = assetName
-            };
-            AssetDatabase.CreateAsset(meshContainer, path);
-            AssetDatabase.AddObjectToAsset(childMesh, meshContainer);
-            meshContainer.Initialize(creationTarget, childMesh);
-            AssetDatabaseUtility.ForceSaveAsset(meshContainer);
-
-            // select the newly created Parent Asset in the Project Window
-            Selection.activeObject = meshContainer;
-        }
+        protected abstract void DrawMeshPreview(Rect previewRect, Object targetObject);
     }
 }

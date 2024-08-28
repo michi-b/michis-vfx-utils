@@ -19,11 +19,6 @@ namespace MichisMeshMakers.Editor.Containers
         [SerializeField] [Range(0f, Constants.SqrtOf2)]
         private float _diagonalLength = 1f;
 
-        protected override void Initialize()
-        {
-            RegenerateMesh();
-        }
-
         private static void SetVertex(int index, float x, float y)
         {
             Vertices[index] = new Vector3(x, y, 0f);
@@ -35,7 +30,7 @@ namespace MichisMeshMakers.Editor.Containers
             Uvs[index] = new Vector2(vertex.x + 0.5f, vertex.y + 0.5f);
         }
 
-        public void RegenerateMesh()
+        protected override void Regenerate()
         {
             Mesh.Clear();
 
