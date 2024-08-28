@@ -1,5 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿//#define LOG_UNDO
+
+using System;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -10,11 +11,13 @@ namespace MichisMeshMakers.Editor.Containers.Abstract
     [CustomEditor(typeof(MeshContainer))]
     public abstract class MeshContainerEditorBase : UnityEditor.Editor
     {
+#if UNITY_2022_1_OR_NEWER
         // stack of undo records that can be undone
-        private static readonly Stack<UndoRecord> UndoStack = new();
+        private static readonly Stack<UndoRecord> UndoStack = new Stack<UndoRecord>();
 
         // inverted stack of undo records that can be redone
-        private static readonly Stack<UndoRecord> RedoStack = new();
+        private static readonly Stack<UndoRecord> RedoStack = new Stack<UndoRecord>();
+#endif
 
         private SerializedProperty _meshProperty;
         private SerializedProperty _statisticsProperty;
@@ -23,7 +26,11 @@ namespace MichisMeshMakers.Editor.Containers.Abstract
 
         static MeshContainerEditorBase()
         {
+#if UNITY_2022_1_OR_NEWER
             Undo.undoRedoEvent += OnUndoRedo;
+#else
+            Undo.undoRedoPerformed += OnUndoRedoLegacy;
+#endif
         }
 
         protected virtual void OnEnable()
@@ -38,6 +45,7 @@ namespace MichisMeshMakers.Editor.Containers.Abstract
             _statisticsProperty = serializedObject.FindProperty(MeshContainer.StatisticsFieldName);
         }
 
+#if UNITY_2022_1_OR_NEWER
         private static void OnUndoRedo(in UndoRedoInfo undo)
         {
             int undoGroup = undo.undoGroup;
@@ -63,6 +71,20 @@ namespace MichisMeshMakers.Editor.Containers.Abstract
                 }
             }
         }
+#else
+        private static void OnUndoRedoLegacy()
+        {
+            foreach (Object o in Selection.objects)
+            {
+                if (o is MeshContainer meshContainer)
+                {
+                    meshContainer.Apply();
+                    EditorUtility.SetDirty(meshContainer.Mesh);
+                }
+            }
+        }
+#endif
+
 
         public sealed override void OnInspectorGUI()
         {
@@ -114,7 +136,9 @@ namespace MichisMeshMakers.Editor.Containers.Abstract
 
         protected void Apply()
         {
+#if UNITY_2022_1_OR_NEWER
             RedoStack.Clear();
+#endif
 
             int undoGroup = Undo.GetCurrentGroup();
 
@@ -128,11 +152,16 @@ namespace MichisMeshMakers.Editor.Containers.Abstract
 
             Undo.CollapseUndoOperations(undoGroup);
 
+#if UNITY_2022_1_OR_NEWER
             UndoStack.Push(new UndoRecord(undoGroup, _targetMeshContainers));
+#endif
 
+#if LOG_UNDO
             Debug.Log("Recorded Undo: " + undoGroup);
+#endif
         }
 
+#if UNITY_2022_1_OR_NEWER
         private class UndoRecord
         {
             private readonly MeshContainer[] _meshContainers;
@@ -148,7 +177,9 @@ namespace MichisMeshMakers.Editor.Containers.Abstract
 
             public void Apply()
             {
-                Debug.Log($"Applying Undo: {Group}");
+#if LOG_UNDO
+                     Debug.Log($"Applying Undo: {Group}"); 
+#endif
                 foreach (MeshContainer meshContainer in _meshContainers)
                 {
                     if (meshContainer != null)
@@ -159,5 +190,6 @@ namespace MichisMeshMakers.Editor.Containers.Abstract
                 }
             }
         }
+#endif
     }
 }
