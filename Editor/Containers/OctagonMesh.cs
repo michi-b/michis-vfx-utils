@@ -64,9 +64,19 @@ namespace MichisMeshMakers.Editor.Containers
             }
 
             int vertexCount = Mesh.vertexCount;
-            for (int i = 0; i < vertexCount; i++) GenerateUv(i);
-            Mesh.SetUVs(0, Uvs, 0, vertexCount);
+            
+            for (int i = 0; i < vertexCount; i++)
+            {
+                GenerateUv(i);
+            }
 
+            Mesh.SetUVs(0, Uvs, 0, vertexCount);
+            
+            Mesh.colors32 = null;
+            Mesh.normals = null;
+            Mesh.tangents = null;
+            Mesh.uv2 = Mesh.uv3 = Mesh.uv4 = Mesh.uv5 = Mesh.uv6 = Mesh.uv7 = Mesh.uv8 = null;
+            
             Mesh.Optimize();
             Mesh.UploadMeshData(true);
         }
