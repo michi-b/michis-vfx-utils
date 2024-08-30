@@ -12,7 +12,7 @@ namespace MichisMeshMakers.Editor.Utility
             AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate | ImportAssetOptions.ForceSynchronousImport);
         }
 
-        public static string GetCreateAssetPath(string assetName)
+        public static string GetUniqueAssetPathInActiveFolder(string assetName)
         {
             string activeFolder = SelectionUtility.GetActiveFolder();
             return AssetDatabase.GenerateUniqueAssetPath(Path.Combine(activeFolder, $"{assetName}.asset"));

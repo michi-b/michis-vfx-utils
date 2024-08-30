@@ -2,6 +2,7 @@
 
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -12,6 +13,7 @@ namespace MichisMeshMakers.Editor.Containers.Abstract
     [CustomEditor(typeof(MeshContainer))]
     public abstract class MeshContainerEditorBase : UnityEditor.Editor
     {
+        private static readonly HashSet<MeshContainer> MeshContainerChildSyncQueue = new HashSet<MeshContainer>();
         private SerializedProperty _meshProperty;
 
         private SerializedProperty _statisticsProperty;
@@ -59,21 +61,31 @@ namespace MichisMeshMakers.Editor.Containers.Abstract
             {
                 var meshContainer = (MeshContainer)targetObject;
                 Mesh mesh = meshContainer.Mesh;
-                if (!string.Equals(mesh.name, meshContainer.name, StringComparison.Ordinal))
+
+                if (!MeshContainerChildSyncQueue.Contains(meshContainer)
+                    && !string.Equals(mesh.name, meshContainer.name, StringComparison.Ordinal))
                 {
                     // Delay the renaming of the mesh to after the gui update to avoid Unity logging a warning
                     // todo: Ensure that child renaming shows up instantly in the project window
                     // Currently it only shows up after changing the view there 
+
+                    MeshContainerChildSyncQueue.Add(meshContainer);
+
                     EditorApplication.delayCall += () =>
                     {
-                        Undo.RecordObject(mesh, "Synchronize Mesh Container Mesh Name");
-                        mesh.name = meshContainer.name;
-                        EditorUtility.SetDirty(mesh);
-                        AssetDatabase.SaveAssetIfDirty(mesh);
-                        AssetDatabase.Refresh();
+                        if (MeshContainerChildSyncQueue.Contains(meshContainer))
+                        {
+                            Undo.RecordObject(mesh, "Synchronize Mesh Container Mesh Name");
+                            mesh.name = meshContainer.name;
+                            EditorUtility.SetDirty(mesh);
+                            AssetDatabase.SaveAssetIfDirty(mesh);
+                            AssetDatabase.Refresh();
+                            Debug.Log($"Synchronized the name of mesh container {meshContainer.name} to it's child mesh.");
+                            EditorGUIUtility.PingObject(mesh);
+                            MeshContainerChildSyncQueue.Remove(meshContainer);
+                        }
                     };
                 }
-            
             }
 
             DrawProperties();
@@ -105,11 +117,12 @@ namespace MichisMeshMakers.Editor.Containers.Abstract
 
             string targetsString = string.Join(", ", targets.Select(tmc => tmc.name));
             string undoOperationName = $"Apply Container to Mesh in {targetsString}";
-            Undo.RegisterCompleteObjectUndo(_targetMeshContainers.Select(tmc => tmc.Mesh as Object).ToArray(), undoOperationName);
-            
+            Undo.RegisterCompleteObjectUndo(targets, undoOperationName);
+
             foreach (MeshContainer targetMeshContainer in _targetMeshContainers)
             {
                 targetMeshContainer.Apply();
+                EditorUtility.SetDirty(targetMeshContainer.Mesh);
             }
 
             Undo.CollapseUndoOperations(undoGroup);

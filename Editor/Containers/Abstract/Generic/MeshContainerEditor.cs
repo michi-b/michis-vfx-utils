@@ -34,7 +34,7 @@ namespace MichisMeshMakers.Editor.Containers.Abstract.Generic
 
             assetName = creationTarget != null ? creationTarget.name : AssetDatabase.Contains(selection) ? selection.name : assetName;
 
-            string path = AssetDatabaseUtility.GetCreateAssetPath(assetName);
+            string path = AssetDatabaseUtility.GetUniqueAssetPathInActiveFolder(assetName);
 
             var meshContainer = CreateInstance<TMeshContainer>();
             meshContainer.name = assetName;
@@ -42,10 +42,10 @@ namespace MichisMeshMakers.Editor.Containers.Abstract.Generic
             {
                 name = assetName
             };
+            meshContainer.Initialize(creationTarget, childMesh);
             AssetDatabase.CreateAsset(meshContainer, path);
             AssetDatabase.AddObjectToAsset(childMesh, meshContainer);
-            meshContainer.Initialize(creationTarget, childMesh);
-            AssetDatabaseUtility.ForceSaveAsset(meshContainer);
+            AssetDatabaseUtility.ForceSaveAsset(meshContainer, true);
 
             // select the newly created Parent Asset in the Project Window
             Selection.activeObject = meshContainer;
