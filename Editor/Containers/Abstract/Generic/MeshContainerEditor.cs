@@ -20,11 +20,6 @@ namespace MichisMeshMakers.Editor.Containers.Abstract.Generic
             Targets = Array.ConvertAll(targets, t => (TMeshContainer)t);
         }
 
-        protected void OnDisable()
-        {
-            ParticleSystemAllocationFix.FlushParticleSystemAllocations();
-        }
-
         protected override void DrawMeshPreview(Rect previewRect, MeshContainer targetMeshContainer)
         {
             DrawMeshPreview(previewRect, (TMeshContainer)targetMeshContainer);

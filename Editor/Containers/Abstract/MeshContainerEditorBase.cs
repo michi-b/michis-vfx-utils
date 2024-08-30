@@ -38,6 +38,11 @@ namespace MichisMeshMakers.Editor.Containers.Abstract
             _statisticsProperty = serializedObject.FindProperty(MeshContainer.StatisticsFieldName);
         }
 
+        protected virtual void OnDisable()
+        {
+            ParticleSystemAllocationFix.FlushParticleSystemAllocations();
+        }
+
         private static void OnUndoRedoLegacy()
         {
             foreach (Object o in Selection.objects)
