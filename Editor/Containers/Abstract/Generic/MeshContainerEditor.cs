@@ -34,20 +34,22 @@ namespace MichisMeshMakers.Editor.Containers.Abstract.Generic
 
             assetName = creationTarget != null ? creationTarget.name : AssetDatabase.Contains(selection) ? selection.name : assetName;
 
-            string path = AssetDatabaseUtility.GetUniqueAssetPathInActiveFolder(assetName);
+            string containerPath = AssetDatabaseUtility.GetUniqueAssetPathInActiveFolder(assetName + EditorPreferences.MeshContainerAssetNamePostFix);
+            string meshPath = AssetDatabaseUtility.GetUniqueAssetPathInActiveFolder(assetName + EditorPreferences.MeshAssetNamePostFix);
 
-            var meshContainer = CreateInstance<TMeshContainer>();
-            meshContainer.name = assetName;
-            var childMesh = new Mesh
+            var mesh = new Mesh
             {
                 name = assetName
             };
-            meshContainer.Initialize(creationTarget, childMesh);
-            AssetDatabase.CreateAsset(meshContainer, path);
-            AssetDatabase.AddObjectToAsset(childMesh, meshContainer);
-            AssetDatabaseUtility.ForceSaveAsset(meshContainer, true);
+            AssetDatabase.CreateAsset(mesh, meshPath);
+            AssetDatabaseUtility.ForceSaveAsset(mesh, true);
+            Undo.RegisterCreatedObjectUndo(mesh, "Create mesh " + assetName);
             
-            Undo.RegisterCreatedObjectUndo(childMesh, "Create mesh " + assetName);
+            var meshContainer = CreateInstance<TMeshContainer>();
+            meshContainer.name = assetName;
+            meshContainer.Initialize(creationTarget, mesh);
+            AssetDatabase.CreateAsset(meshContainer, containerPath);
+            AssetDatabaseUtility.ForceSaveAsset(meshContainer, true);
             Undo.RegisterCreatedObjectUndo(meshContainer, "Create mesh container " + assetName);
 
             // select the newly created Parent Asset in the Project Window

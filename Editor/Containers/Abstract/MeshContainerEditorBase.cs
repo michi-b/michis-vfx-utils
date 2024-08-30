@@ -62,37 +62,6 @@ namespace MichisMeshMakers.Editor.Containers.Abstract
         {
             serializedObject.Update();
 
-            foreach (Object targetObject in targets)
-            {
-                var meshContainer = (MeshContainer)targetObject;
-                Mesh mesh = meshContainer.Mesh;
-
-                if (!MeshContainerChildSyncQueue.Contains(meshContainer)
-                    && !string.Equals(mesh.name, meshContainer.name, StringComparison.Ordinal))
-                {
-                    // Delay the renaming of the mesh to after the gui update to avoid Unity logging a warning
-                    // todo: Ensure that child renaming shows up instantly in the project window
-                    // Currently it only shows up after changing the view there 
-
-                    MeshContainerChildSyncQueue.Add(meshContainer);
-
-                    EditorApplication.delayCall += () =>
-                    {
-                        if (MeshContainerChildSyncQueue.Contains(meshContainer))
-                        {
-                            Undo.RecordObject(mesh, "Synchronize Mesh Container Mesh Name");
-                            mesh.name = meshContainer.name;
-                            EditorUtility.SetDirty(mesh);
-                            AssetDatabase.SaveAssetIfDirty(mesh);
-                            AssetDatabase.Refresh();
-                            Debug.Log($"Synchronized the name of mesh container {meshContainer.name} to it's child mesh.");
-                            EditorGUIUtility.PingObject(mesh);
-                            MeshContainerChildSyncQueue.Remove(meshContainer);
-                        }
-                    };
-                }
-            }
-
             DrawProperties();
 
             foreach (MeshContainer targetObject in _targetMeshContainers)
