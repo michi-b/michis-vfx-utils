@@ -20,6 +20,11 @@ namespace MichisMeshMakers.Editor.Containers.Abstract.Generic
             Targets = Array.ConvertAll(targets, t => (TMeshContainer)t);
         }
 
+        protected void OnDisable()
+        {
+            ParticleSystemAllocationFix.FlushParticleSystemAllocations();
+        }
+
         protected override void DrawMeshPreview(Rect previewRect, MeshContainer targetMeshContainer)
         {
             DrawMeshPreview(previewRect, (TMeshContainer)targetMeshContainer);
@@ -46,6 +51,9 @@ namespace MichisMeshMakers.Editor.Containers.Abstract.Generic
             AssetDatabase.CreateAsset(meshContainer, path);
             AssetDatabase.AddObjectToAsset(childMesh, meshContainer);
             AssetDatabaseUtility.ForceSaveAsset(meshContainer, true);
+            
+            Undo.RegisterCreatedObjectUndo(childMesh, "Create mesh " + assetName);
+            Undo.RegisterCreatedObjectUndo(meshContainer, "Create mesh container " + assetName);
 
             // select the newly created Parent Asset in the Project Window
             Selection.activeObject = meshContainer;

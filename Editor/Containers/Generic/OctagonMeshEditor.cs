@@ -1,5 +1,4 @@
-﻿using MichisMeshMakers.Editor.Containers.Abstract;
-using MichisMeshMakers.Editor.Containers.Abstract.Generic;
+﻿using MichisMeshMakers.Editor.Containers.Abstract.Generic;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;

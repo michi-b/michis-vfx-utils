@@ -19,6 +19,7 @@ namespace MichisMeshMakers.Editor.Containers.Abstract.Generic
         protected override void DrawProperties()
         {
             base.DrawProperties();
+            
             EditorGUILayout.PropertyField(_textureProperty, MeshContainerLabels.SourceTexture);
         }
 
