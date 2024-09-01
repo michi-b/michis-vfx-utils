@@ -4,6 +4,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
+using MichisMeshMakers.Editor.Extensions;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -15,8 +17,6 @@ namespace MichisMeshMakers.Editor.Containers.Abstract
     {
         private static readonly HashSet<MeshContainer> MeshContainerChildSyncQueue = new HashSet<MeshContainer>();
         private SerializedProperty _meshProperty;
-
-        private SerializedProperty _statisticsProperty;
 
         private MeshContainer[] _targetMeshContainers;
         private Mesh[] _targetMeshes;
@@ -35,7 +35,6 @@ namespace MichisMeshMakers.Editor.Containers.Abstract
             }
 
             _meshProperty = serializedObject.FindProperty(MeshContainer.MeshFieldName);
-            _statisticsProperty = serializedObject.FindProperty(MeshContainer.StatisticsFieldName);
         }
 
         private static void OnUndoRedoLegacy()
@@ -90,22 +89,45 @@ namespace MichisMeshMakers.Editor.Containers.Abstract
 
             DrawProperties();
 
-            foreach (MeshContainer targetObject in _targetMeshContainers)
+            foreach (MeshContainer meshContainer in _targetMeshContainers)
             {
                 float width = EditorGUIUtility.currentViewWidth - 35;
                 Rect previewRect = GUILayoutUtility.GetRect(width, width, GUILayout.ExpandWidth(false));
                 if (Event.current.type == EventType.Repaint)
                 {
-                    DrawMeshPreview(previewRect, targetObject);
+                    DrawMeshPreview(previewRect, meshContainer);
                 }
+
+                DrawMeshStatistics(previewRect, meshContainer);
             }
+        }
+
+        protected virtual void DrawMeshStatistics(Rect previewRect, MeshContainer meshContainer)
+        {
+            MeshStatistics statistics = meshContainer.Statistics;
+            DrawStatistic(previewRect.TakeLineFromBottom(), MeshContainerGuiLabels.TriangleCount, (meshContainer.Mesh.GetIndexCount(0) / 3).ToString());
+            DrawStatistic(previewRect.TakeLineFromBottom(), MeshContainerGuiLabels.VertexCount, meshContainer.Mesh.vertexCount.ToString());
+            DrawStatistic(previewRect.TakeLineFromBottom(), MeshContainerGuiLabels.SurfaceArea, FormatSurfaceArea(statistics.SurfaceArea));
+        }
+
+        protected virtual string FormatSurfaceArea(float surfaceArea)
+        {
+            return surfaceArea.AsPercentage();
+        }
+
+
+        [PublicAPI]
+        protected static void DrawStatistic(Rect rect, GUIContent label, string value)
+        {
+            EditorGUI.LabelField(rect.TakeFromLeftRelative(0.5f), label);
+            EditorGUI.LabelField(rect, value, GuiStyles.RightAlignedLabel);
         }
 
         protected virtual void DrawProperties()
         {
             using (new EditorGUI.DisabledScope(true))
             {
-                EditorGUILayout.PropertyField(_meshProperty, MeshContainerLabels.GeneratedMesh);
+                EditorGUILayout.PropertyField(_meshProperty, MeshContainerGuiLabels.GeneratedMesh);
             }
         }
 

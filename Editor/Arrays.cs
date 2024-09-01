@@ -10,6 +10,6 @@ namespace MichisMeshMakers.Editor
             [PublicAPI] public static readonly Vector3[] TriangleVertexCache = new Vector3[3];
         }
 
-        [PublicAPI] public static readonly int[] TriangleLineIndices = {0, 1, 1, 2, 2, 0};
+        [PublicAPI] public static readonly int[] TriangleLineIndices = { 0, 1, 1, 2, 2, 0 };
     }
 }

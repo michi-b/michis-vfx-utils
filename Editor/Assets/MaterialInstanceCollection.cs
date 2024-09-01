@@ -21,6 +21,7 @@ namespace MichisMeshMakers.Editor.Assets
                 {
                     _canvasGridInstance = new Material(_canvasGrid);
                 }
+
                 return _canvasGridInstance;
             }
         }
@@ -34,6 +35,7 @@ namespace MichisMeshMakers.Editor.Assets
                 {
                     _additiveInstance = new Material(_additive);
                 }
+
                 return _additiveInstance;
             }
         }

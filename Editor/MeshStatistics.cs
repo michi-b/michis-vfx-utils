@@ -6,6 +6,8 @@ namespace MichisMeshMakers.Editor
     [Serializable]
     public struct MeshStatistics
     {
+        public const string SurfaceAreaFieldName = "_surfaceArea";
+
         [SerializeField] private float _surfaceArea;
 
         public float SurfaceArea => _surfaceArea;

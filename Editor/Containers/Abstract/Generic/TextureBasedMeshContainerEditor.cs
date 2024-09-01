@@ -19,8 +19,8 @@ namespace MichisMeshMakers.Editor.Containers.Abstract.Generic
         protected override void DrawProperties()
         {
             base.DrawProperties();
-            
-            EditorGUILayout.PropertyField(_textureProperty, MeshContainerLabels.SourceTexture);
+
+            EditorGUILayout.PropertyField(_textureProperty, MeshContainerGuiLabels.SourceTexture);
         }
 
         protected override void DrawMeshPreview(Rect rect, TMeshContainer meshContainer)
@@ -68,9 +68,9 @@ namespace MichisMeshMakers.Editor.Containers.Abstract.Generic
                 Arrays.Temporary.TriangleVertexCache[2] = ConvertPoint(mesh.vertices[mesh.triangles[startIndex + 2]]);
                 Handles.DrawLines(Arrays.Temporary.TriangleVertexCache, Arrays.TriangleLineIndices);
             }
-            
+
             Handles.EndGUI();
-            
+
             SceneView.RepaintAll();
 
             return;

@@ -29,6 +29,7 @@ namespace MichisMeshMakers.Editor.Assets
                     return assets;
                 }
             }
+
             throw new Exception($"{Menu.Name} could not find editor assets.");
         }
 

@@ -46,7 +46,7 @@ namespace MichisMeshMakers.Editor.Containers.Abstract.Generic
             AssetDatabase.CreateAsset(meshContainer, path);
             AssetDatabase.AddObjectToAsset(childMesh, meshContainer);
             AssetDatabaseUtility.ForceSaveAsset(meshContainer, true);
-            
+
             Undo.RegisterCreatedObjectUndo(childMesh, "Create mesh " + assetName);
             Undo.RegisterCreatedObjectUndo(meshContainer, "Create mesh container " + assetName);
 

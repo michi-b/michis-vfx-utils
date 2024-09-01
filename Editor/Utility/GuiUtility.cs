@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityEditor;
+using UnityEngine;
 
 namespace MichisMeshMakers.Editor.Utility
 {
@@ -22,10 +23,14 @@ namespace MichisMeshMakers.Editor.Utility
                 float x2 = (rect.x + rect.width) / Screen.width;
                 float y2 = (rect.y + rect.height) / Screen.height;
 
-                GL.TexCoord2(0, 0); GL.Vertex3(x1, y1, 0);
-                GL.TexCoord2(1, 0); GL.Vertex3(x2, y1, 0);
-                GL.TexCoord2(1, 1); GL.Vertex3(x2, y2, 0);
-                GL.TexCoord2(0, 1); GL.Vertex3(x1, y2, 0);
+                GL.TexCoord2(0, 0);
+                GL.Vertex3(x1, y1, 0);
+                GL.TexCoord2(1, 0);
+                GL.Vertex3(x2, y1, 0);
+                GL.TexCoord2(1, 1);
+                GL.Vertex3(x2, y2, 0);
+                GL.TexCoord2(0, 1);
+                GL.Vertex3(x1, y2, 0);
 
                 GL.End();
                 GL.PopMatrix();
