@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using MichisMeshMakers.Editor.Extensions;
+using MichisMeshMakers.Editor.Utility;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -61,6 +62,19 @@ namespace MichisMeshMakers.Editor.Containers.Abstract
                 var meshContainer = (MeshContainer)targetObject;
                 Mesh mesh = meshContainer.Mesh;
 
+                if (meshContainer.Mesh == null)
+                {
+                    var so = new SerializedObject(meshContainer);
+                    SerializedProperty sp = so.FindProperty(MeshContainer.MeshFieldName);
+                    sp.objectReferenceValue = AssetDatabaseUtility.LoadFromSameAsset<Mesh>(meshContainer);
+                    so.ApplyModifiedProperties();
+                    mesh = meshContainer.Mesh;
+                    Debug.Assert(mesh != null);
+                    serializedObject.Update();
+                    Apply();
+                }
+
+                // handle child mesh name out of sync
                 if (!MeshContainerChildSyncQueue.Contains(meshContainer)
                     && !string.Equals(mesh.name, meshContainer.name, StringComparison.Ordinal))
                 {

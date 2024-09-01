@@ -20,13 +20,22 @@ namespace MichisMeshMakers.Editor.Containers.Abstract.Generic
         {
             base.DrawProperties();
 
+            EditorGUI.BeginChangeCheck();
             EditorGUILayout.PropertyField(_textureProperty, MeshContainerGuiLabels.SourceTexture);
+            if (EditorGUI.EndChangeCheck())
+            {
+                serializedObject.ApplyModifiedProperties();
+            }
         }
 
         protected override void DrawMeshPreview(Rect rect, TMeshContainer meshContainer)
         {
             DrawCanvas(rect);
-            DrawTexture(rect, meshContainer.Texture);
+            if (meshContainer.Texture != null)
+            {
+                DrawTexture(rect, meshContainer.Texture);
+            }
+
             DrawMesh(rect, meshContainer.Mesh);
         }
 

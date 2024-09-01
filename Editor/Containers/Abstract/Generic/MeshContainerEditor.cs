@@ -27,10 +27,9 @@ namespace MichisMeshMakers.Editor.Containers.Abstract.Generic
 
         protected abstract void DrawMeshPreview(Rect rect, TMeshContainer meshContainer);
 
-        protected static void Create(string assetName, Func<string, Object> getCreationTarget)
+        protected static void Create(string assetName, Object creationTarget)
         {
             Object selection = Selection.activeObject;
-            Object creationTarget = getCreationTarget(AssetDatabase.GetAssetPath(selection));
 
             assetName = creationTarget != null ? creationTarget.name : AssetDatabase.Contains(selection) ? selection.name : assetName;
 

@@ -11,7 +11,7 @@ namespace MichisMeshMakers.Editor.Containers
     public class OctagonMeshEditor : TextureBasedMeshContainerEditor<OctagonMesh>
     {
         private const string AssetMenuName = "Octagon Mesh";
-        private const string AssetFileName = "OctagonMesh";
+        private const string DefaultAssetFileName = "OctagonMesh";
 
         private const string ConstrainLengthsTooltip = "Whether the lengths are set with capped sliders to remain within a unit quad.";
         private static readonly GUIContent ConstrainLengthsLabel = new GUIContent("Display Lengths As Sliders", ConstrainLengthsTooltip);
@@ -68,14 +68,9 @@ namespace MichisMeshMakers.Editor.Containers
         }
 
         [MenuItem(Menu.CreateAssetPath + AssetMenuName)]
-        public static void CreateParentAssetWithMesh()
+        public static void Create()
         {
-            Create(AssetFileName, GetCreationTarget);
-        }
-
-        private static Object GetCreationTarget(string selectionPath)
-        {
-            return AssetDatabase.LoadAssetAtPath<Texture2D>(selectionPath);
+            Create(DefaultAssetFileName, AssetDatabaseUtility.LoadSelectedObject<Texture2D>());
         }
     }
 }

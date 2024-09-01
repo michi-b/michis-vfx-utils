@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using MichisMeshMakers.Editor.Containers.Abstract;
 using UnityEditor;
 using UnityEngine;
 
@@ -20,6 +21,26 @@ namespace MichisMeshMakers.Editor.Utility
             {
                 AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate | ImportAssetOptions.ForceSynchronousImport);
             }
+        }
+
+        public static bool GetIsInWritableFolder(string texturePath)
+        {
+            // strip file name from path
+            string folderPath = Path.GetDirectoryName(texturePath);
+            return AssetDatabase.IsOpenForEdit(folderPath);
+        }
+
+        public static T LoadSelectedObject<T>() where T : Object
+        {
+            return AssetDatabase.LoadAssetAtPath<T>(AssetDatabase.GetAssetPath(Selection.activeObject));
+        }
+
+        /// <summary>
+        /// Loads an object of type <typeparamref name="T"/> from the same asset as the <paramref name="meshContainer"/>.
+        /// </summary>
+        public static T LoadFromSameAsset<T>(MeshContainer meshContainer) where T : Object
+        {
+            return AssetDatabase.LoadAssetAtPath<T>(AssetDatabase.GetAssetPath(meshContainer));
         }
     }
 }

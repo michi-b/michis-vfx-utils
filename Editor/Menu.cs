@@ -7,5 +7,11 @@
         public const string CreateAssetPath = "Assets/Create/" + Path;
         public const string WindowPath = "Window/" + Path;
         public const string Tools = "Tools/" + Path;
+
+        public static class Context
+        {
+            private const string ContextPrefix = "CONTEXT/";
+            public const string ParticleSystem = ContextPrefix + nameof(ParticleSystem) + "/" + Path;
+        }
     }
 }
