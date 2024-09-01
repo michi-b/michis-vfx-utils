@@ -23,10 +23,15 @@ namespace MichisMeshMakers.Editor.Utility
             }
         }
 
-        public static bool GetIsInWritableFolder(string texturePath)
+        public static bool GetIsInWritableFolder(Object asset)
+        {
+            return GetIsInWritableFolder(AssetDatabase.GetAssetPath(asset));
+        }
+
+        public static bool GetIsInWritableFolder(string assetPath)
         {
             // strip file name from path
-            string folderPath = Path.GetDirectoryName(texturePath);
+            string folderPath = Path.GetDirectoryName(assetPath);
             return AssetDatabase.IsOpenForEdit(folderPath);
         }
 

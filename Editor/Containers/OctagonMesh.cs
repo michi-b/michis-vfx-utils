@@ -327,7 +327,7 @@ namespace MichisMeshMakers.Editor.Containers
                 return result;
             }
         }
-        
+
         private static class XShape
         {
             private const int VertexCount = 16;
@@ -353,16 +353,16 @@ namespace MichisMeshMakers.Editor.Containers
             public static MeshData Generate(Lengths lengths)
             {
                 MeshData result = MeshData.Allocate(VertexCount, IndexCount);
-            
+
                 float axisDistance = lengths.Axis * Limit;
-            
+
                 result.SetVertex(Bottom, 0, -axisDistance);
                 result.SetVertex(Left, -axisDistance, 0);
-                result.SetVertex(Top, 0, axisDistance); 
+                result.SetVertex(Top, 0, axisDistance);
                 result.SetVertex(Right, axisDistance, 0);
-            
+
                 float hypotheticalDiagonalAxisDistance = lengths.Diagonal * Limit * Constants.OneBySqrtOf2;
-                Vector2 hypotheticalTopRight = new Vector2(hypotheticalDiagonalAxisDistance, hypotheticalDiagonalAxisDistance);
+                var hypotheticalTopRight = new Vector2(hypotheticalDiagonalAxisDistance, hypotheticalDiagonalAxisDistance);
                 Vector2 top = result.Vertices[Top].GetXy();
                 var ray1 = new Ray2D(top, hypotheticalTopRight - top);
                 var ray2 = new Ray2D(new Vector2(-Limit, Limit), Vector2.right);
@@ -371,26 +371,26 @@ namespace MichisMeshMakers.Editor.Containers
                 result.SetVertex(BottomLeft0, -shortDiagonalAxisDistance, -Limit);
                 result.SetVertex(BottomLeft1, -Limit, -shortDiagonalAxisDistance);
                 result.SetVertex(BottomLeftTip, -Limit, -Limit);
-                
+
                 result.SetVertex(TopLeft0, -Limit, shortDiagonalAxisDistance);
                 result.SetVertex(TopLeft1, -shortDiagonalAxisDistance, Limit);
                 result.SetVertex(TopLeftTip, -Limit, Limit);
-                
+
                 result.SetVertex(TopRight0, shortDiagonalAxisDistance, Limit);
                 result.SetVertex(TopRight1, Limit, shortDiagonalAxisDistance);
                 result.SetVertex(TopRightTip, Limit, Limit);
-                
+
                 result.SetVertex(BottomRight0, Limit, -shortDiagonalAxisDistance);
                 result.SetVertex(BottomRight1, shortDiagonalAxisDistance, -Limit);
                 result.SetVertex(BottomRightTip, Limit, -Limit);
-                
+
                 result.Indices[0] = Bottom;
                 result.Indices[1] = Left;
                 result.Indices[2] = Top;
                 result.Indices[3] = Bottom;
                 result.Indices[4] = Top;
                 result.Indices[5] = Right;
-                
+
                 result.Indices[6] = Bottom;
                 result.Indices[7] = BottomLeft0;
                 result.Indices[8] = BottomLeft1;
@@ -400,7 +400,7 @@ namespace MichisMeshMakers.Editor.Containers
                 result.Indices[12] = BottomLeft0;
                 result.Indices[13] = BottomLeftTip;
                 result.Indices[14] = BottomLeft1;
-                
+
                 result.Indices[15] = Left;
                 result.Indices[16] = TopLeft0;
                 result.Indices[17] = TopLeft1;
@@ -410,7 +410,7 @@ namespace MichisMeshMakers.Editor.Containers
                 result.Indices[21] = TopLeft0;
                 result.Indices[22] = TopLeftTip;
                 result.Indices[23] = TopLeft1;
-                
+
                 result.Indices[24] = Top;
                 result.Indices[25] = TopRight0;
                 result.Indices[26] = TopRight1;
@@ -420,7 +420,7 @@ namespace MichisMeshMakers.Editor.Containers
                 result.Indices[30] = TopRight0;
                 result.Indices[31] = TopRightTip;
                 result.Indices[32] = TopRight1;
-                
+
                 result.Indices[33] = Right;
                 result.Indices[34] = BottomRight0;
                 result.Indices[35] = BottomRight1;
@@ -430,7 +430,7 @@ namespace MichisMeshMakers.Editor.Containers
                 result.Indices[39] = BottomRight0;
                 result.Indices[40] = BottomRightTip;
                 result.Indices[41] = BottomRight1;
-                
+
                 return result;
             }
         }

@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using JetBrains.Annotations;
 using MichisMeshMakers.Editor.Extensions;
@@ -162,6 +163,13 @@ namespace MichisMeshMakers.Editor.Containers.Abstract
             }
 
             Undo.CollapseUndoOperations(undoGroup);
+        }
+
+        protected static string GetCreateAssetPathFromTarget(Object target)
+        {
+            string texturePath = AssetDatabase.GetAssetPath(target);
+            string assetPath = Path.ChangeExtension(texturePath, "asset");
+            return AssetDatabase.GenerateUniqueAssetPath(assetPath);
         }
     }
 }

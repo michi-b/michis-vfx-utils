@@ -1,4 +1,5 @@
-﻿using MichisMeshMakers.Editor.Containers.Abstract.Generic;
+﻿using MichisMeshMakers.Editor.Containers.Abstract;
+using MichisMeshMakers.Editor.Containers.Abstract.Generic;
 using MichisMeshMakers.Editor.Utility;
 using UnityEditor;
 using UnityEngine;
@@ -11,7 +12,7 @@ namespace MichisMeshMakers.Editor.Containers
     public class OctagonMeshEditor : TextureBasedMeshContainerEditor<OctagonMesh>
     {
         private const string AssetMenuName = "Octagon Mesh";
-        private const string DefaultAssetFileName = "OctagonMesh";
+        private const string FallbackAssetName = "OctagonMesh";
 
         private const string ConstrainLengthsTooltip = "Whether the lengths are set with capped sliders to remain within a unit quad.";
         private static readonly GUIContent ConstrainLengthsLabel = new GUIContent("Display Lengths As Sliders", ConstrainLengthsTooltip);
@@ -70,7 +71,15 @@ namespace MichisMeshMakers.Editor.Containers
         [MenuItem(Menu.CreateAssetPath + AssetMenuName)]
         public static void Create()
         {
-            Create(DefaultAssetFileName, AssetDatabaseUtility.LoadSelectedObject<Texture2D>());
+            var selectedTexture = AssetDatabaseUtility.LoadSelectedObject<Texture2D>();
+            MeshContainer _ = selectedTexture != null && AssetDatabaseUtility.GetIsInWritableFolder(selectedTexture)
+                ? Create(selectedTexture)
+                : Create(AssetDatabaseUtility.GetUniqueAssetPathInActiveFolder(FallbackAssetName), null);
+        }
+
+        public static OctagonMesh Create(Texture2D textureAsset)
+        {
+            return Create(GetCreateAssetPathFromTarget(textureAsset), meshContainer => { Initialize(meshContainer, textureAsset); });
         }
     }
 }

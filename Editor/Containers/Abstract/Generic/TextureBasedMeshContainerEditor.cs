@@ -1,12 +1,13 @@
-﻿using MichisMeshMakers.Editor.Assets;
+﻿using System.IO;
+using MichisMeshMakers.Editor.Assets;
+using MichisMeshMakers.Editor.Utility;
 using UnityEditor;
 using UnityEngine;
 
 namespace MichisMeshMakers.Editor.Containers.Abstract.Generic
 {
     public abstract class TextureBasedMeshContainerEditor<TMeshContainer>
-        : MeshContainerEditor<TMeshContainer>
-        where TMeshContainer : TextureBasedMeshContainer
+        : MeshContainerEditor<TMeshContainer> where TMeshContainer : TextureBasedMeshContainer
     {
         private SerializedProperty _textureProperty;
 
@@ -92,6 +93,20 @@ namespace MichisMeshMakers.Editor.Containers.Abstract.Generic
                 xy += new Vector2(center.x, center.y);
                 return new Vector3(xy.x, xy.y, 0f);
             }
+        }
+
+        protected static string GetCreateAssetPathFromSelection(string fallbackName)
+        {
+            var selectedTexture = AssetDatabaseUtility.LoadSelectedObject<Texture2D>();
+            return selectedTexture != null ? GetCreateAssetPathFromTarget(selectedTexture) : fallbackName;
+        }
+
+        protected static void Initialize(TMeshContainer meshContainer, Texture2D texture)
+        {
+            var so = new SerializedObject(meshContainer);
+            SerializedProperty sp = so.FindProperty(TextureBasedMeshContainer.TextureFieldName);
+            sp.objectReferenceValue = texture;
+            so.ApplyModifiedProperties();
         }
     }
 }

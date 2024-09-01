@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using JetBrains.Annotations;
 using MichisMeshMakers.Editor.Utility;
 using UnityEditor;
@@ -27,21 +28,18 @@ namespace MichisMeshMakers.Editor.Containers.Abstract.Generic
 
         protected abstract void DrawMeshPreview(Rect rect, TMeshContainer meshContainer);
 
-        protected static void Create(string assetName, Object creationTarget)
+        protected static TMeshContainer Create(string path, [CanBeNull] Action<TMeshContainer> initialize)
         {
-            Object selection = Selection.activeObject;
-
-            assetName = creationTarget != null ? creationTarget.name : AssetDatabase.Contains(selection) ? selection.name : assetName;
-
-            string path = AssetDatabaseUtility.GetUniqueAssetPathInActiveFolder(assetName);
-
+            string assetName = Path.GetFileNameWithoutExtension(path);
             var meshContainer = CreateInstance<TMeshContainer>();
             meshContainer.name = assetName;
             var childMesh = new Mesh
             {
                 name = assetName
             };
-            meshContainer.Initialize(creationTarget, childMesh);
+
+            meshContainer.Initialize(childMesh);
+            initialize?.Invoke(meshContainer);
             AssetDatabase.CreateAsset(meshContainer, path);
             AssetDatabase.AddObjectToAsset(childMesh, meshContainer);
             AssetDatabaseUtility.ForceSaveAsset(meshContainer, true);
@@ -51,6 +49,7 @@ namespace MichisMeshMakers.Editor.Containers.Abstract.Generic
 
             // select the newly created Parent Asset in the Project Window
             Selection.activeObject = meshContainer;
+            return meshContainer;
         }
     }
 }
