@@ -1,4 +1,4 @@
-﻿namespace MichisUnityVfxUtilities.MichisUnityVfxUtilities.Editor
+﻿namespace MichisVfxUtils.Editor
 {
     public static class Constants
     {

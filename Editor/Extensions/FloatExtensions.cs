@@ -1,4 +1,4 @@
-﻿namespace MichisUnityVfxUtilities.MichisUnityVfxUtilities.Editor.Extensions
+﻿namespace MichisVfxUtils.Editor.Extensions
 {
     public static class FloatExtensions
     {

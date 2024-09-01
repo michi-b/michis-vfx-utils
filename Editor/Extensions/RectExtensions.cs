@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace MichisUnityVfxUtilities.MichisUnityVfxUtilities.Editor.Extensions
+namespace MichisVfxUtils.Editor.Extensions
 {
     [PublicAPI]
     public static class RectExtensions

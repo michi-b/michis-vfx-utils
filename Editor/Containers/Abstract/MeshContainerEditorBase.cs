@@ -6,13 +6,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using JetBrains.Annotations;
-using MichisUnityVfxUtilities.MichisUnityVfxUtilities.Editor.Extensions;
-using MichisUnityVfxUtilities.MichisUnityVfxUtilities.Editor.Utility;
+using MichisVfxUtils.Editor.Extensions;
+using MichisVfxUtils.Editor.Utility;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace MichisUnityVfxUtilities.MichisUnityVfxUtilities.Editor.Containers.Abstract
+namespace MichisVfxUtils.Editor.Containers.Abstract
 {
     [CustomEditor(typeof(MeshContainer))]
     public abstract class MeshContainerEditorBase : UnityEditor.Editor

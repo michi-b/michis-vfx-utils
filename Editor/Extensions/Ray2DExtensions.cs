@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace MichisUnityVfxUtilities.MichisUnityVfxUtilities.Editor.Extensions
+namespace MichisVfxUtils.Editor.Extensions
 {
     public static class Ray2DExtensions
     {

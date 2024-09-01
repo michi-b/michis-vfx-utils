@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace MichisUnityVfxUtilities.MichisUnityVfxUtilities.Editor.Assets
+namespace MichisVfxUtils.Editor.Assets
 {
     [InitializeOnLoad]
     [CustomEditor(typeof(EditorAssets))]

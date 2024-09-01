@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace MichisUnityVfxUtilities.MichisUnityVfxUtilities.Editor.Assets
+namespace MichisVfxUtils.Editor.Assets
 {
     public class EditorAssets : ScriptableObject
     {

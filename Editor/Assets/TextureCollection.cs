@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace MichisUnityVfxUtilities.MichisUnityVfxUtilities.Editor.Assets
+namespace MichisVfxUtils.Editor.Assets
 {
     [Serializable]
     public class TextureCollection

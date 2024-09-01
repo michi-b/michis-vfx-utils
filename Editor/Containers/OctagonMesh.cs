@@ -1,10 +1,10 @@
 ﻿using System;
-using MichisUnityVfxUtilities.MichisUnityVfxUtilities.Editor.Containers.Abstract.Generic;
-using MichisUnityVfxUtilities.MichisUnityVfxUtilities.Editor.Extensions;
+using MichisVfxUtils.Editor.Containers.Abstract.Generic;
+using MichisVfxUtils.Editor.Extensions;
 using Unity.Collections;
 using UnityEngine;
 
-namespace MichisUnityVfxUtilities.MichisUnityVfxUtilities.Editor.Containers
+namespace MichisVfxUtils.Editor.Containers
 {
     public class OctagonMesh : TextureBasedMeshContainer
     {

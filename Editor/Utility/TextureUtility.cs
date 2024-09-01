@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace MichisUnityVfxUtilities.MichisUnityVfxUtilities.Editor.Utility
+namespace MichisVfxUtils.Editor.Utility
 {
     public static class TextureUtility
     {

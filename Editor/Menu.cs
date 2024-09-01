@@ -1,8 +1,8 @@
-﻿namespace MichisUnityVfxUtilities.MichisUnityVfxUtilities.Editor
+﻿namespace MichisVfxUtils.Editor
 {
     public static class Menu
     {
-        public const string Name = "Michi's VFX Utilities/";
+        public const string Name = "Michi's VFX Utils/";
         private const string Path = Name + "/";
         public const string CreateAssetPath = "Assets/Create/" + Path;
         public const string WindowPath = "Window/" + Path;

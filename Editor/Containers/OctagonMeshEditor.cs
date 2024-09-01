@@ -1,10 +1,10 @@
-﻿using MichisUnityVfxUtilities.MichisUnityVfxUtilities.Editor.Containers.Abstract;
-using MichisUnityVfxUtilities.MichisUnityVfxUtilities.Editor.Containers.Abstract.Generic;
-using MichisUnityVfxUtilities.MichisUnityVfxUtilities.Editor.Utility;
+﻿using MichisVfxUtils.Editor.Containers.Abstract;
+using MichisVfxUtils.Editor.Containers.Abstract.Generic;
+using MichisVfxUtils.Editor.Utility;
 using UnityEditor;
 using UnityEngine;
 
-namespace MichisUnityVfxUtilities.MichisUnityVfxUtilities.Editor.Containers
+namespace MichisVfxUtils.Editor.Containers
 {
     [CanEditMultipleObjects]
     [CustomEditor(typeof(OctagonMesh))]
