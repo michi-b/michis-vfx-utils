@@ -31,7 +31,7 @@ When you expand it, you can also see the child (regular) mesh object that is edi
 
 The context menu entry also assigned this mesh to the particle system (and changed the render mode to "Mesh"),
 so it's using this optimized geometry for rendering.
-If you want ot use this mesh for other things as well, just assign it manually in the inspector.
+If you want to use this mesh for other things as well, just assign it manually in the inspector.
 
 ![OctagonMeshAssignment.png](https://drive.usercontent.google.com/download?id=1XOj7QRL9uoVNtLCY6_0sTgW5MPSsPcIb)
 
