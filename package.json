@@ -1,0 +1,22 @@
+{
+  "name": "com.michi-b.michis-vfx-utils",
+  "version": "0.0.1",
+  "displayName": "Michi's VFX Utilities",
+  "description": "Various tools to help with general VFX development.",
+  "unity": "2020.3",
+  "documentationUrl": "https://github.com/michi-b/michis-unity-vfx-utilities",
+  "changelogUrl": "https://github.com/michi-b/michis-unity-vfx-utilities",
+  "licensesUrl": "https://opensource.org/license/mit",
+  "dependencies": {
+  },
+  "keywords": [
+    "vfx",
+    "octagon",
+    "mesh"
+  ],
+  "author": {
+    "name": "Michael Brunner",
+    "email": "misbat.dev@gmail.com",
+    "url": "https://github.com/michi-b"
+  }
+}
