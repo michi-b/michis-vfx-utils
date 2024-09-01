@@ -9,8 +9,11 @@ namespace MichisVfxUtils.Editor.Utility
         {
             EditorGUI.showMixedValue = property.hasMultipleDifferentValues;
             EditorGUI.BeginChangeCheck();
-            var value = EditorGUILayout.ToggleLeft(label, property.boolValue);
-            if (EditorGUI.EndChangeCheck()) property.boolValue = value;
+            bool value = EditorGUILayout.ToggleLeft(label, property.boolValue);
+            if (EditorGUI.EndChangeCheck())
+            {
+                property.boolValue = value;
+            }
         }
     }
 }

@@ -9,7 +9,7 @@ namespace MichisVfxUtils.Editor.Utility
     {
         public static string GetUniqueAssetPathInActiveFolder(string assetName)
         {
-            var activeFolder = SelectionUtility.GetActiveFolder();
+            string activeFolder = SelectionUtility.GetActiveFolder();
             return AssetDatabase.GenerateUniqueAssetPath(Path.Combine(activeFolder, $"{assetName}.asset"));
         }
 
@@ -18,7 +18,9 @@ namespace MichisVfxUtils.Editor.Utility
             EditorUtility.SetDirty(asset);
             AssetDatabase.SaveAssetIfDirty(asset);
             if (instantRefresh)
+            {
                 AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate | ImportAssetOptions.ForceSynchronousImport);
+            }
         }
 
         public static bool GetIsInWritableFolder(Object asset)
@@ -29,7 +31,7 @@ namespace MichisVfxUtils.Editor.Utility
         public static bool GetIsInWritableFolder(string assetPath)
         {
             // strip file name from path
-            var folderPath = Path.GetDirectoryName(assetPath);
+            string folderPath = Path.GetDirectoryName(assetPath);
             return AssetDatabase.IsOpenForEdit(folderPath);
         }
 

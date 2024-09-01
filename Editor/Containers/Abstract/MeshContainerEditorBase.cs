@@ -31,35 +31,37 @@ namespace MichisVfxUtils.Editor.Containers.Abstract
         protected virtual void OnEnable()
         {
             _targetMeshContainers = new MeshContainer[targets.Length];
-            for (var i = 0; i < targets.Length; i++) _targetMeshContainers[i] = (MeshContainer)targets[i];
+            for (int i = 0; i < targets.Length; i++) _targetMeshContainers[i] = (MeshContainer)targets[i];
 
             _meshProperty = serializedObject.FindProperty(MeshContainer.MeshFieldName);
         }
 
         private static void OnUndoRedoLegacy()
         {
-            foreach (var o in Selection.objects)
+            foreach (Object o in Selection.objects)
                 if (o is MeshContainer meshContainer)
+                {
                     if (meshContainer != null)
                     {
                         meshContainer.Apply();
                         EditorUtility.SetDirty(meshContainer.Mesh);
                     }
+                }
         }
 
         public sealed override void OnInspectorGUI()
         {
             serializedObject.UpdateIfRequiredOrScript();
 
-            foreach (var targetObject in targets)
+            foreach (Object targetObject in targets)
             {
                 var meshContainer = (MeshContainer)targetObject;
-                var mesh = meshContainer.Mesh;
+                Mesh mesh = meshContainer.Mesh;
 
                 if (meshContainer.Mesh == null)
                 {
                     var so = new SerializedObject(meshContainer);
-                    var sp = so.FindProperty(MeshContainer.MeshFieldName);
+                    SerializedProperty sp = so.FindProperty(MeshContainer.MeshFieldName);
                     sp.objectReferenceValue = AssetDatabaseUtility.LoadFromSameAsset<Mesh>(meshContainer);
                     so.ApplyModifiedProperties();
                     mesh = meshContainer.Mesh;
@@ -98,11 +100,14 @@ namespace MichisVfxUtils.Editor.Containers.Abstract
 
             DrawProperties();
 
-            foreach (var meshContainer in _targetMeshContainers)
+            foreach (MeshContainer meshContainer in _targetMeshContainers)
             {
-                var width = EditorGUIUtility.currentViewWidth - 35;
-                var previewRect = GUILayoutUtility.GetRect(width, width, GUILayout.ExpandWidth(false));
-                if (Event.current.type == EventType.Repaint) DrawMeshPreview(previewRect, meshContainer);
+                float width = EditorGUIUtility.currentViewWidth - 35;
+                Rect previewRect = GUILayoutUtility.GetRect(width, width, GUILayout.ExpandWidth(false));
+                if (Event.current.type == EventType.Repaint)
+                {
+                    DrawMeshPreview(previewRect, meshContainer);
+                }
 
                 DrawMeshStatistics(previewRect, meshContainer);
             }
@@ -110,7 +115,7 @@ namespace MichisVfxUtils.Editor.Containers.Abstract
 
         protected virtual void DrawMeshStatistics(Rect previewRect, MeshContainer meshContainer)
         {
-            var statistics = meshContainer.Statistics;
+            MeshStatistics statistics = meshContainer.Statistics;
             DrawStatistic(previewRect.TakeLineFromBottom(), MeshContainerGuiLabels.TriangleCount,
                 (meshContainer.Mesh.GetIndexCount(0) / 3).ToString());
             DrawStatistic(previewRect.TakeLineFromBottom(), MeshContainerGuiLabels.VertexCount,
@@ -144,13 +149,13 @@ namespace MichisVfxUtils.Editor.Containers.Abstract
 
         protected void Apply()
         {
-            var undoGroup = Undo.GetCurrentGroup();
+            int undoGroup = Undo.GetCurrentGroup();
 
-            var targetsString = string.Join(", ", targets.Select(tmc => tmc.name));
-            var undoOperationName = $"Apply Container to Mesh in {targetsString}";
+            string targetsString = string.Join(", ", targets.Select(tmc => tmc.name));
+            string undoOperationName = $"Apply Container to Mesh in {targetsString}";
             Undo.RegisterCompleteObjectUndo(targets, undoOperationName);
 
-            foreach (var targetMeshContainer in _targetMeshContainers)
+            foreach (MeshContainer targetMeshContainer in _targetMeshContainers)
             {
                 targetMeshContainer.Apply();
                 EditorUtility.SetDirty(targetMeshContainer.Mesh);
@@ -161,8 +166,8 @@ namespace MichisVfxUtils.Editor.Containers.Abstract
 
         protected static string GetCreateAssetPathFromTarget(Object target)
         {
-            var texturePath = AssetDatabase.GetAssetPath(target);
-            var assetPath = Path.ChangeExtension(texturePath, "asset");
+            string texturePath = AssetDatabase.GetAssetPath(target);
+            string assetPath = Path.ChangeExtension(texturePath, "asset");
             return AssetDatabase.GenerateUniqueAssetPath(assetPath);
         }
     }

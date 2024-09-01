@@ -36,13 +36,13 @@ namespace MichisVfxUtils.Editor.Containers
                 Diagonal = _diagonalLength
             };
 
-            var isAxisOverSized = unconstrainedLengths.Axis >= AxisLengthConstraint;
-            var isDiagonallyOverSized = unconstrainedLengths.Diagonal >= DiagonalLengthConstraint;
+            bool isAxisOverSized = unconstrainedLengths.Axis >= AxisLengthConstraint;
+            bool isDiagonallyOverSized = unconstrainedLengths.Diagonal >= DiagonalLengthConstraint;
 
-            var isQuad = Math.Abs(constrainedLengths.Diagonal * Constants.OneBySqrtOf2 - _axisLength) < float.Epsilon
-                         || (isAxisOverSized && isDiagonallyOverSized);
+            bool isQuad = Math.Abs(constrainedLengths.Diagonal * Constants.OneBySqrtOf2 - _axisLength) < float.Epsilon
+                          || (isAxisOverSized && isDiagonallyOverSized);
 
-            var meshData = isQuad
+            MeshData meshData = isQuad
                 ? Quad.Generate(constrainedLengths)
                 : _constrainLengths
                     ? Octagon.Generate(constrainedLengths)
@@ -54,20 +54,20 @@ namespace MichisVfxUtils.Editor.Containers
 
             try
             {
-                var vertexCount = meshData.Vertices.Length;
+                int vertexCount = meshData.Vertices.Length;
                 var uvs = new NativeArray<Vector2>(vertexCount, Allocator.Temp);
                 // var colors = new NativeArray<Color32>(vertexCount, Allocator.Temp);
                 try
                 {
                     uvs[0] = new Vector2();
-                    for (var i = 0; i < vertexCount; i++)
+                    for (int i = 0; i < vertexCount; i++)
                     {
-                        var vertex = meshData.Vertices[i];
+                        Vector3 vertex = meshData.Vertices[i];
                         uvs[i] = new Vector2(vertex.x + 0.5f, vertex.y + 0.5f);
                         // colors[i] = new Color32(255, 255, 255, 255);
                     }
 
-                    var m = Mesh;
+                    Mesh m = Mesh;
                     m.Clear();
                     m.SetVertices(meshData.Vertices);
                     m.SetUVs(0, uvs);
@@ -138,9 +138,9 @@ namespace MichisVfxUtils.Editor.Containers
 
             public static MeshData Generate(Lengths lengths)
             {
-                var result = MeshData.Allocate(VertexCount, IndexCount);
+                MeshData result = MeshData.Allocate(VertexCount, IndexCount);
 
-                var axisDistance = lengths.Axis * 0.5f;
+                float axisDistance = lengths.Axis * 0.5f;
 
                 result.SetVertex(BottomLeft, -axisDistance, -axisDistance);
                 result.SetVertex(TopLeft, -axisDistance, axisDistance);
@@ -173,10 +173,10 @@ namespace MichisVfxUtils.Editor.Containers
 
             public static MeshData Generate(Lengths lengths)
             {
-                var result = MeshData.Allocate(VertexCount, IndexCount);
+                MeshData result = MeshData.Allocate(VertexCount, IndexCount);
 
-                var axisDistance = lengths.Axis * Limit;
-                var diagonalPerAxisDistance = lengths.Diagonal * Limit * Constants.OneBySqrtOf2;
+                float axisDistance = lengths.Axis * Limit;
+                float diagonalPerAxisDistance = lengths.Diagonal * Limit * Constants.OneBySqrtOf2;
 
                 result.SetVertex(BottomLeft, -diagonalPerAxisDistance, -diagonalPerAxisDistance);
                 result.SetVertex(Left, -axisDistance, 0f);
@@ -266,19 +266,19 @@ namespace MichisVfxUtils.Editor.Containers
 
             public static MeshData Generate(Lengths lengths)
             {
-                var result = MeshData.Allocate(VertexCount, IndexCount);
+                MeshData result = MeshData.Allocate(VertexCount, IndexCount);
 
-                var diagonalDistance = lengths.Diagonal * Limit * Constants.OneBySqrtOf2;
+                float diagonalDistance = lengths.Diagonal * Limit * Constants.OneBySqrtOf2;
 
                 result.SetVertex(BottomLeft, -diagonalDistance, -diagonalDistance);
                 result.SetVertex(TopLeft, -diagonalDistance, diagonalDistance);
                 result.SetVertex(TopRight, diagonalDistance, diagonalDistance);
                 result.SetVertex(BottomRight, diagonalDistance, -diagonalDistance);
 
-                var topRight = result.Vertices[TopRight].GetXy();
+                Vector2 topRight = result.Vertices[TopRight].GetXy();
                 var ray1 = new Ray2D(topRight, new Vector2(0, lengths.Axis * Limit) - topRight);
                 var ray2 = new Ray2D(new Vector2(-Limit, Limit), Vector2.right);
-                var shortAxisDistance = ray1.Intersect(ray2).x;
+                float shortAxisDistance = ray1.Intersect(ray2).x;
 
                 result.SetVertex(Left0, -Limit, -shortAxisDistance);
                 result.SetVertex(Left1, -Limit, shortAxisDistance);
@@ -352,22 +352,22 @@ namespace MichisVfxUtils.Editor.Containers
 
             public static MeshData Generate(Lengths lengths)
             {
-                var result = MeshData.Allocate(VertexCount, IndexCount);
+                MeshData result = MeshData.Allocate(VertexCount, IndexCount);
 
-                var axisDistance = lengths.Axis * Limit;
+                float axisDistance = lengths.Axis * Limit;
 
                 result.SetVertex(Bottom, 0, -axisDistance);
                 result.SetVertex(Left, -axisDistance, 0);
                 result.SetVertex(Top, 0, axisDistance);
                 result.SetVertex(Right, axisDistance, 0);
 
-                var hypotheticalDiagonalAxisDistance = lengths.Diagonal * Limit * Constants.OneBySqrtOf2;
+                float hypotheticalDiagonalAxisDistance = lengths.Diagonal * Limit * Constants.OneBySqrtOf2;
                 var hypotheticalTopRight =
                     new Vector2(hypotheticalDiagonalAxisDistance, hypotheticalDiagonalAxisDistance);
-                var top = result.Vertices[Top].GetXy();
+                Vector2 top = result.Vertices[Top].GetXy();
                 var ray1 = new Ray2D(top, hypotheticalTopRight - top);
                 var ray2 = new Ray2D(new Vector2(-Limit, Limit), Vector2.right);
-                var shortDiagonalAxisDistance = ray1.Intersect(ray2).x;
+                float shortDiagonalAxisDistance = ray1.Intersect(ray2).x;
 
                 result.SetVertex(BottomLeft0, -shortDiagonalAxisDistance, -Limit);
                 result.SetVertex(BottomLeft1, -Limit, -shortDiagonalAxisDistance);

@@ -12,23 +12,39 @@ namespace MichisVfxUtils.Editor
         {
             var particleSystem = (ParticleSystem)menuCommand.context;
 
-            var assetPath = AssetDatabase.GetAssetPath(particleSystem);
+            string assetPath = AssetDatabase.GetAssetPath(particleSystem);
             if (assetPath != null)
+            {
                 if (!AssetDatabase.IsOpenForEdit(assetPath))
+                {
                     return false;
+                }
+            }
 
             var renderer = particleSystem.GetComponent<ParticleSystemRenderer>();
-            if (renderer == null) return false;
+            if (renderer == null)
+            {
+                return false;
+            }
 
-            var material = renderer.sharedMaterial;
-            if (material == null) return false;
+            Material material = renderer.sharedMaterial;
+            if (material == null)
+            {
+                return false;
+            }
 
             var texture = material.mainTexture as Texture2D;
-            if (texture == null) return false;
+            if (texture == null)
+            {
+                return false;
+            }
 
-            var texturePath = AssetDatabase.GetAssetPath(texture);
+            string texturePath = AssetDatabase.GetAssetPath(texture);
             // ReSharper disable once ConvertIfStatementToReturnStatement
-            if (texturePath == null) return false;
+            if (texturePath == null)
+            {
+                return false;
+            }
 
             // check if the texture path is a read-only asset
             return AssetDatabaseUtility.GetIsInWritableFolder(texturePath);
@@ -39,14 +55,16 @@ namespace MichisVfxUtils.Editor
         {
             var particleSystem = (ParticleSystem)command.context;
             var renderer = particleSystem.GetComponent<ParticleSystemRenderer>();
-            var material = renderer.sharedMaterial;
+            Material material = renderer.sharedMaterial;
             var texture = (Texture2D)material.mainTexture;
-            var octagonMesh = OctagonMeshEditor.Create(texture);
+            OctagonMesh octagonMesh = OctagonMeshEditor.Create(texture);
 
             // assign new octagon mesh to particle system
             Undo.RecordObject(renderer, $"Assign Octagon Mesh to {renderer.gameObject.name}");
             if (renderer.renderMode != ParticleSystemRenderMode.Mesh)
+            {
                 renderer.renderMode = ParticleSystemRenderMode.Mesh;
+            }
 
             renderer.mesh = octagonMesh.Mesh;
         }

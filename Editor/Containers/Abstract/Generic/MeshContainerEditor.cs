@@ -30,7 +30,7 @@ namespace MichisVfxUtils.Editor.Containers.Abstract.Generic
 
         protected static TMeshContainer Create(string path, [CanBeNull] Action<TMeshContainer> initialize)
         {
-            var assetName = Path.GetFileNameWithoutExtension(path);
+            string assetName = Path.GetFileNameWithoutExtension(path);
             var meshContainer = CreateInstance<TMeshContainer>();
             meshContainer.name = assetName;
             var childMesh = new Mesh

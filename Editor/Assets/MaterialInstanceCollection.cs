@@ -17,7 +17,10 @@ namespace MichisVfxUtils.Editor.Assets
             get
             {
                 // ReSharper disable once Unity.PerformanceCriticalCodeNullComparison
-                if (_canvasGridInstance == null) _canvasGridInstance = new Material(_canvasGrid);
+                if (_canvasGridInstance == null)
+                {
+                    _canvasGridInstance = new Material(_canvasGrid);
+                }
 
                 return _canvasGridInstance;
             }
@@ -28,7 +31,10 @@ namespace MichisVfxUtils.Editor.Assets
             get
             {
                 // ReSharper disable once Unity.PerformanceCriticalCodeNullComparison
-                if (_additiveInstance == null) _additiveInstance = new Material(_additive);
+                if (_additiveInstance == null)
+                {
+                    _additiveInstance = new Material(_additive);
+                }
 
                 return _additiveInstance;
             }

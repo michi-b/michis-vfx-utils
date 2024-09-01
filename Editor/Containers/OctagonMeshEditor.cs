@@ -44,8 +44,8 @@ namespace MichisVfxUtils.Editor.Containers
 
             EditorGUI.BeginChangeCheck();
             EditorGuiLayoutUtility.ToggleLeftProperty(_constrainLengthsProperty, ConstrainLengthsLabel);
-            var lengthsAreUnconstrained = _constrainLengthsProperty.hasMultipleDifferentValues ||
-                                          !_constrainLengthsProperty.boolValue;
+            bool lengthsAreUnconstrained = _constrainLengthsProperty.hasMultipleDifferentValues ||
+                                           !_constrainLengthsProperty.boolValue;
             if (lengthsAreUnconstrained)
             {
                 DrawUnconstrainedLengthProperty(_axisLengthProperty, AxisLengthLabel);
@@ -68,7 +68,7 @@ namespace MichisVfxUtils.Editor.Containers
         {
             EditorGUI.showMixedValue = property.hasMultipleDifferentValues;
             EditorGUI.BeginChangeCheck();
-            var value = EditorGUILayout.FloatField(property.displayName, property.floatValue);
+            float value = EditorGUILayout.FloatField(property.displayName, property.floatValue);
             if (EditorGUI.EndChangeCheck())
             {
                 value = Mathf.Max(value, 0f); // still constrain the value to be >= 0f

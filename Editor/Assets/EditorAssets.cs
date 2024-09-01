@@ -19,12 +19,15 @@ namespace MichisVfxUtils.Editor.Assets
 
         public static EditorAssets Load()
         {
-            var paths = AssetDatabase.FindAssets($"t:{nameof(EditorAssets)}");
+            string[] paths = AssetDatabase.FindAssets($"t:{nameof(EditorAssets)}");
 
-            foreach (var path in paths)
+            foreach (string path in paths)
             {
                 var assets = AssetDatabase.LoadAssetAtPath<EditorAssets>(AssetDatabase.GUIDToAssetPath(path));
-                if (assets != null) return assets;
+                if (assets != null)
+                {
+                    return assets;
+                }
             }
 
             throw new Exception($"{Menu.Name} could not find editor assets.");
@@ -33,7 +36,10 @@ namespace MichisVfxUtils.Editor.Assets
         public void ReloadMaterialInstances(bool logMessage = false)
         {
             _materialInstances.ClearCache();
-            if (logMessage) Debug.Log($"{Menu.Name} reloaded editor material instances.");
+            if (logMessage)
+            {
+                Debug.Log($"{Menu.Name} reloaded editor material instances.");
+            }
         }
     }
 }
