@@ -1,14 +1,14 @@
 ﻿using System;
 using System.IO;
 using JetBrains.Annotations;
-using MichisMeshMakers.Editor.Utility;
+using MichisUnityVfxUtilities.MichisUnityVfxUtilities.Editor.Utility;
 using UnityEditor;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
-namespace MichisMeshMakers.Editor.Containers.Abstract.Generic
+namespace MichisUnityVfxUtilities.MichisUnityVfxUtilities.Editor.Containers.Abstract.Generic
 {
-    public abstract class MeshContainerEditor<TMeshContainer> : MeshContainerEditorBase where TMeshContainer : MeshContainer
+    public abstract class MeshContainerEditor<TMeshContainer> : MeshContainerEditorBase
+        where TMeshContainer : MeshContainer
     {
         [PublicAPI] protected TMeshContainer Target { get; private set; }
 
@@ -30,7 +30,7 @@ namespace MichisMeshMakers.Editor.Containers.Abstract.Generic
 
         protected static TMeshContainer Create(string path, [CanBeNull] Action<TMeshContainer> initialize)
         {
-            string assetName = Path.GetFileNameWithoutExtension(path);
+            var assetName = Path.GetFileNameWithoutExtension(path);
             var meshContainer = CreateInstance<TMeshContainer>();
             meshContainer.name = assetName;
             var childMesh = new Mesh

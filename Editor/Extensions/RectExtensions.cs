@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace MichisMeshMakers.Editor.Extensions
+namespace MichisUnityVfxUtilities.MichisUnityVfxUtilities.Editor.Extensions
 {
     [PublicAPI]
     public static class RectExtensions

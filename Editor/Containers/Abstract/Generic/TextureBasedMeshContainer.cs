@@ -1,7 +1,6 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace MichisMeshMakers.Editor.Containers.Abstract.Generic
+namespace MichisUnityVfxUtilities.MichisUnityVfxUtilities.Editor.Containers.Abstract.Generic
 {
     public abstract class TextureBasedMeshContainer : MeshContainer
     {

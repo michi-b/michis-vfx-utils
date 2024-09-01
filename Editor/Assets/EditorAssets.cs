@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace MichisMeshMakers.Editor.Assets
+namespace MichisUnityVfxUtilities.MichisUnityVfxUtilities.Editor.Assets
 {
     public class EditorAssets : ScriptableObject
     {
@@ -19,15 +19,12 @@ namespace MichisMeshMakers.Editor.Assets
 
         public static EditorAssets Load()
         {
-            string[] paths = AssetDatabase.FindAssets($"t:{nameof(EditorAssets)}");
+            var paths = AssetDatabase.FindAssets($"t:{nameof(EditorAssets)}");
 
-            foreach (string path in paths)
+            foreach (var path in paths)
             {
                 var assets = AssetDatabase.LoadAssetAtPath<EditorAssets>(AssetDatabase.GUIDToAssetPath(path));
-                if (assets != null)
-                {
-                    return assets;
-                }
+                if (assets != null) return assets;
             }
 
             throw new Exception($"{Menu.Name} could not find editor assets.");
@@ -36,10 +33,7 @@ namespace MichisMeshMakers.Editor.Assets
         public void ReloadMaterialInstances(bool logMessage = false)
         {
             _materialInstances.ClearCache();
-            if (logMessage)
-            {
-                Debug.Log($"{Menu.Name} reloaded editor material instances.");
-            }
+            if (logMessage) Debug.Log($"{Menu.Name} reloaded editor material instances.");
         }
     }
 }

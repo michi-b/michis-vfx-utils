@@ -1,6 +1,6 @@
 {
-  "name": "TextureMeshEditor.Editor",
-  "rootNamespace": "MichisMeshMakers",
+  "name": "MichisUnityVfxUtilities.Editor",
+  "rootNamespace": "MichisUnityVfxUtilities",
   "references": [],
   "includePlatforms": [
     "Editor"

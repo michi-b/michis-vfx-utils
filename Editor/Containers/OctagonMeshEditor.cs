@@ -1,11 +1,10 @@
-﻿using MichisMeshMakers.Editor.Containers.Abstract;
-using MichisMeshMakers.Editor.Containers.Abstract.Generic;
-using MichisMeshMakers.Editor.Utility;
+﻿using MichisUnityVfxUtilities.MichisUnityVfxUtilities.Editor.Containers.Abstract;
+using MichisUnityVfxUtilities.MichisUnityVfxUtilities.Editor.Containers.Abstract.Generic;
+using MichisUnityVfxUtilities.MichisUnityVfxUtilities.Editor.Utility;
 using UnityEditor;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
-namespace MichisMeshMakers.Editor.Containers
+namespace MichisUnityVfxUtilities.MichisUnityVfxUtilities.Editor.Containers
 {
     [CanEditMultipleObjects]
     [CustomEditor(typeof(OctagonMesh))]
@@ -14,10 +13,18 @@ namespace MichisMeshMakers.Editor.Containers
         private const string AssetMenuName = "Octagon Mesh";
         private const string FallbackAssetName = "OctagonMesh";
 
-        private const string ConstrainLengthsTooltip = "Whether the lengths are set with capped sliders to remain within a unit quad.";
-        private static readonly GUIContent ConstrainLengthsLabel = new GUIContent("Display Lengths As Sliders", ConstrainLengthsTooltip);
-        private static readonly GUIContent AxisLengthLabel = new GUIContent("Axis Length", "The size of the octagon along the x and y axis.");
-        private static readonly GUIContent DiagonalLengthLabel = new GUIContent("Diagonal Length", "The size of the octagon along the diagonals.");
+        private const string ConstrainLengthsTooltip =
+            "Whether the lengths are set with capped sliders to remain within a unit quad.";
+
+        private static readonly GUIContent ConstrainLengthsLabel =
+            new GUIContent("Display Lengths As Sliders", ConstrainLengthsTooltip);
+
+        private static readonly GUIContent AxisLengthLabel =
+            new GUIContent("Axis Length", "The size of the octagon along the x and y axis.");
+
+        private static readonly GUIContent DiagonalLengthLabel =
+            new GUIContent("Diagonal Length", "The size of the octagon along the diagonals.");
+
         private SerializedProperty _axisLengthProperty;
 
         private SerializedProperty _constrainLengthsProperty;
@@ -37,7 +44,8 @@ namespace MichisMeshMakers.Editor.Containers
 
             EditorGUI.BeginChangeCheck();
             EditorGuiLayoutUtility.ToggleLeftProperty(_constrainLengthsProperty, ConstrainLengthsLabel);
-            bool lengthsAreUnconstrained = _constrainLengthsProperty.hasMultipleDifferentValues || !_constrainLengthsProperty.boolValue;
+            var lengthsAreUnconstrained = _constrainLengthsProperty.hasMultipleDifferentValues ||
+                                          !_constrainLengthsProperty.boolValue;
             if (lengthsAreUnconstrained)
             {
                 DrawUnconstrainedLengthProperty(_axisLengthProperty, AxisLengthLabel);
@@ -60,7 +68,7 @@ namespace MichisMeshMakers.Editor.Containers
         {
             EditorGUI.showMixedValue = property.hasMultipleDifferentValues;
             EditorGUI.BeginChangeCheck();
-            float value = EditorGUILayout.FloatField(property.displayName, property.floatValue);
+            var value = EditorGUILayout.FloatField(property.displayName, property.floatValue);
             if (EditorGUI.EndChangeCheck())
             {
                 value = Mathf.Max(value, 0f); // still constrain the value to be >= 0f
@@ -79,7 +87,8 @@ namespace MichisMeshMakers.Editor.Containers
 
         public static OctagonMesh Create(Texture2D textureAsset)
         {
-            return Create(GetCreateAssetPathFromTarget(textureAsset), meshContainer => { Initialize(meshContainer, textureAsset); });
+            return Create(GetCreateAssetPathFromTarget(textureAsset),
+                meshContainer => { Initialize(meshContainer, textureAsset); });
         }
     }
 }

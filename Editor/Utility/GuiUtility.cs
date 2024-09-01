@@ -1,7 +1,6 @@
-﻿using UnityEditor;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace MichisMeshMakers.Editor.Utility
+namespace MichisUnityVfxUtilities.MichisUnityVfxUtilities.Editor.Utility
 {
     public static class GuiUtility
     {
@@ -18,10 +17,10 @@ namespace MichisMeshMakers.Editor.Utility
                 GL.Begin(GL.QUADS);
 
                 // Convert rect coordinates to normalized device coordinates
-                float x1 = rect.x / Screen.width;
-                float y1 = rect.y / Screen.height;
-                float x2 = (rect.x + rect.width) / Screen.width;
-                float y2 = (rect.y + rect.height) / Screen.height;
+                var x1 = rect.x / Screen.width;
+                var y1 = rect.y / Screen.height;
+                var x2 = (rect.x + rect.width) / Screen.width;
+                var y2 = (rect.y + rect.height) / Screen.height;
 
                 GL.TexCoord2(0, 0);
                 GL.Vertex3(x1, y1, 0);

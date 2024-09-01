@@ -1,10 +1,9 @@
-using System.IO;
-using MichisMeshMakers.Editor.Containers;
-using MichisMeshMakers.Editor.Utility;
+using MichisUnityVfxUtilities.MichisUnityVfxUtilities.Editor.Containers;
+using MichisUnityVfxUtilities.MichisUnityVfxUtilities.Editor.Utility;
 using UnityEditor;
 using UnityEngine;
 
-namespace MichisMeshMakers.Editor
+namespace MichisUnityVfxUtilities.MichisUnityVfxUtilities.Editor
 {
     public class ParticleSystemContextMenu : MonoBehaviour
     {
@@ -13,39 +12,23 @@ namespace MichisMeshMakers.Editor
         {
             var particleSystem = (ParticleSystem)menuCommand.context;
 
-            string assetPath = AssetDatabase.GetAssetPath(particleSystem);
+            var assetPath = AssetDatabase.GetAssetPath(particleSystem);
             if (assetPath != null)
-            {
                 if (!AssetDatabase.IsOpenForEdit(assetPath))
-                {
                     return false;
-                }
-            }
 
             var renderer = particleSystem.GetComponent<ParticleSystemRenderer>();
-            if (renderer == null)
-            {
-                return false;
-            }
+            if (renderer == null) return false;
 
-            Material material = renderer.sharedMaterial;
-            if (material == null)
-            {
-                return false;
-            }
+            var material = renderer.sharedMaterial;
+            if (material == null) return false;
 
             var texture = material.mainTexture as Texture2D;
-            if (texture == null)
-            {
-                return false;
-            }
+            if (texture == null) return false;
 
-            string texturePath = AssetDatabase.GetAssetPath(texture);
+            var texturePath = AssetDatabase.GetAssetPath(texture);
             // ReSharper disable once ConvertIfStatementToReturnStatement
-            if (texturePath == null)
-            {
-                return false;
-            }
+            if (texturePath == null) return false;
 
             // check if the texture path is a read-only asset
             return AssetDatabaseUtility.GetIsInWritableFolder(texturePath);
@@ -56,16 +39,14 @@ namespace MichisMeshMakers.Editor
         {
             var particleSystem = (ParticleSystem)command.context;
             var renderer = particleSystem.GetComponent<ParticleSystemRenderer>();
-            Material material = renderer.sharedMaterial;
+            var material = renderer.sharedMaterial;
             var texture = (Texture2D)material.mainTexture;
-            OctagonMesh octagonMesh = OctagonMeshEditor.Create(texture);
+            var octagonMesh = OctagonMeshEditor.Create(texture);
 
             // assign new octagon mesh to particle system
             Undo.RecordObject(renderer, $"Assign Octagon Mesh to {renderer.gameObject.name}");
             if (renderer.renderMode != ParticleSystemRenderMode.Mesh)
-            {
                 renderer.renderMode = ParticleSystemRenderMode.Mesh;
-            }
 
             renderer.mesh = octagonMesh.Mesh;
         }

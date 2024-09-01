@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace MichisMeshMakers.Editor.Assets
+namespace MichisUnityVfxUtilities.MichisUnityVfxUtilities.Editor.Assets
 {
     [Serializable]
     public class MaterialInstanceCollection
@@ -17,10 +17,7 @@ namespace MichisMeshMakers.Editor.Assets
             get
             {
                 // ReSharper disable once Unity.PerformanceCriticalCodeNullComparison
-                if (_canvasGridInstance == null)
-                {
-                    _canvasGridInstance = new Material(_canvasGrid);
-                }
+                if (_canvasGridInstance == null) _canvasGridInstance = new Material(_canvasGrid);
 
                 return _canvasGridInstance;
             }
@@ -31,10 +28,7 @@ namespace MichisMeshMakers.Editor.Assets
             get
             {
                 // ReSharper disable once Unity.PerformanceCriticalCodeNullComparison
-                if (_additiveInstance == null)
-                {
-                    _additiveInstance = new Material(_additive);
-                }
+                if (_additiveInstance == null) _additiveInstance = new Material(_additive);
 
                 return _additiveInstance;
             }

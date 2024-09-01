@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace MichisMeshMakers.Editor.Utility
+namespace MichisUnityVfxUtilities.MichisUnityVfxUtilities.Editor.Utility
 {
     public static class EditorGuiLayoutUtility
     {
@@ -9,11 +9,8 @@ namespace MichisMeshMakers.Editor.Utility
         {
             EditorGUI.showMixedValue = property.hasMultipleDifferentValues;
             EditorGUI.BeginChangeCheck();
-            bool value = EditorGUILayout.ToggleLeft(label, property.boolValue);
-            if (EditorGUI.EndChangeCheck())
-            {
-                property.boolValue = value;
-            }
+            var value = EditorGUILayout.ToggleLeft(label, property.boolValue);
+            if (EditorGUI.EndChangeCheck()) property.boolValue = value;
         }
     }
 }

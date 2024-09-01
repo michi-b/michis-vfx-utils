@@ -1,15 +1,15 @@
 ﻿using System.IO;
-using MichisMeshMakers.Editor.Containers.Abstract;
+using MichisUnityVfxUtilities.MichisUnityVfxUtilities.Editor.Containers.Abstract;
 using UnityEditor;
 using UnityEngine;
 
-namespace MichisMeshMakers.Editor.Utility
+namespace MichisUnityVfxUtilities.MichisUnityVfxUtilities.Editor.Utility
 {
     public static class AssetDatabaseUtility
     {
         public static string GetUniqueAssetPathInActiveFolder(string assetName)
         {
-            string activeFolder = SelectionUtility.GetActiveFolder();
+            var activeFolder = SelectionUtility.GetActiveFolder();
             return AssetDatabase.GenerateUniqueAssetPath(Path.Combine(activeFolder, $"{assetName}.asset"));
         }
 
@@ -18,9 +18,7 @@ namespace MichisMeshMakers.Editor.Utility
             EditorUtility.SetDirty(asset);
             AssetDatabase.SaveAssetIfDirty(asset);
             if (instantRefresh)
-            {
                 AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate | ImportAssetOptions.ForceSynchronousImport);
-            }
         }
 
         public static bool GetIsInWritableFolder(Object asset)
@@ -31,7 +29,7 @@ namespace MichisMeshMakers.Editor.Utility
         public static bool GetIsInWritableFolder(string assetPath)
         {
             // strip file name from path
-            string folderPath = Path.GetDirectoryName(assetPath);
+            var folderPath = Path.GetDirectoryName(assetPath);
             return AssetDatabase.IsOpenForEdit(folderPath);
         }
 

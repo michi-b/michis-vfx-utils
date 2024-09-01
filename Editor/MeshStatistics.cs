@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace MichisMeshMakers.Editor
+namespace MichisUnityVfxUtilities.MichisUnityVfxUtilities.Editor
 {
     [Serializable]
     public struct MeshStatistics
@@ -19,14 +19,14 @@ namespace MichisMeshMakers.Editor
 
         private static float EvaluateSurfaceArea(Mesh mesh)
         {
-            Vector3[] vertices = mesh.vertices;
-            int[] triangles = mesh.triangles;
-            float doubleSurfaceArea = 0f;
-            for (int i = 0; i < triangles.Length; i += 3)
+            var vertices = mesh.vertices;
+            var triangles = mesh.triangles;
+            var doubleSurfaceArea = 0f;
+            for (var i = 0; i < triangles.Length; i += 3)
             {
-                Vector3 a = vertices[triangles[i]];
-                Vector3 b = vertices[triangles[i + 1]];
-                Vector3 c = vertices[triangles[i + 2]];
+                var a = vertices[triangles[i]];
+                var b = vertices[triangles[i + 1]];
+                var c = vertices[triangles[i + 2]];
                 doubleSurfaceArea += Vector3.Cross(b - a, c - a).magnitude;
             }
 

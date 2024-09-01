@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace MichisMeshMakers.Editor.Extensions
+namespace MichisUnityVfxUtilities.MichisUnityVfxUtilities.Editor.Extensions
 {
     public static class Vector3Extensions
     {

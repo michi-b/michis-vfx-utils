@@ -1,10 +1,9 @@
-﻿using System.IO;
-using MichisMeshMakers.Editor.Assets;
-using MichisMeshMakers.Editor.Utility;
+﻿using MichisUnityVfxUtilities.MichisUnityVfxUtilities.Editor.Assets;
+using MichisUnityVfxUtilities.MichisUnityVfxUtilities.Editor.Utility;
 using UnityEditor;
 using UnityEngine;
 
-namespace MichisMeshMakers.Editor.Containers.Abstract.Generic
+namespace MichisUnityVfxUtilities.MichisUnityVfxUtilities.Editor.Containers.Abstract.Generic
 {
     public abstract class TextureBasedMeshContainerEditor<TMeshContainer>
         : MeshContainerEditor<TMeshContainer> where TMeshContainer : TextureBasedMeshContainer
@@ -23,60 +22,49 @@ namespace MichisMeshMakers.Editor.Containers.Abstract.Generic
 
             EditorGUI.BeginChangeCheck();
             EditorGUILayout.PropertyField(_textureProperty, MeshContainerGuiLabels.SourceTexture);
-            if (EditorGUI.EndChangeCheck())
-            {
-                serializedObject.ApplyModifiedProperties();
-            }
+            if (EditorGUI.EndChangeCheck()) serializedObject.ApplyModifiedProperties();
         }
 
         protected override void DrawMeshPreview(Rect rect, TMeshContainer meshContainer)
         {
             DrawCanvas(rect);
-            if (meshContainer.Texture != null)
-            {
-                DrawTexture(rect, meshContainer.Texture);
-            }
+            if (meshContainer.Texture != null) DrawTexture(rect, meshContainer.Texture);
 
             DrawMesh(rect, meshContainer.Mesh);
         }
 
         protected virtual void DrawCanvas(Rect rect)
         {
-            if (Event.current.type == EventType.Layout)
-            {
-                return;
-            }
+            if (Event.current.type == EventType.Layout) return;
 
-            Material canvasGridMaterial = EditorAssets.MaterialInstances.CanvasGrid;
+            var canvasGridMaterial = EditorAssets.MaterialInstances.CanvasGrid;
             canvasGridMaterial.SetVector(Ids.MaterialProperties.RectSize, new Vector2(rect.width, rect.height));
-            EditorGUI.DrawPreviewTexture(rect, EditorAssets.Textures.CanvasGrid, canvasGridMaterial, ScaleMode.ScaleAndCrop);
+            EditorGUI.DrawPreviewTexture(rect, EditorAssets.Textures.CanvasGrid, canvasGridMaterial,
+                ScaleMode.ScaleAndCrop);
         }
 
         protected virtual void DrawTexture(Rect position, Texture2D texture)
         {
-            Material material = EditorAssets.MaterialInstances.Additive;
+            var material = EditorAssets.MaterialInstances.Additive;
             material.mainTexture = texture;
             EditorGUI.DrawPreviewTexture(position, texture, material, ScaleMode.StretchToFill);
         }
 
         protected virtual void DrawMesh(Rect position, Mesh mesh)
         {
-            if (Event.current.type == EventType.Layout)
-            {
-                return;
-            }
+            if (Event.current.type == EventType.Layout) return;
 
             Handles.BeginGUI();
 
             Handles.color = Color.white;
-            int triangleCount = mesh.triangles.Length / 3;
-            for (int i = 0; i < triangleCount; i++)
+            var triangleCount = mesh.triangles.Length / 3;
+            for (var i = 0; i < triangleCount; i++)
             {
-                int startIndex = i * 3;
-                Arrays.Temporary.TriangleVertexCache[0] = ConvertPoint(mesh.vertices[mesh.triangles[startIndex]]);
-                Arrays.Temporary.TriangleVertexCache[1] = ConvertPoint(mesh.vertices[mesh.triangles[startIndex + 1]]);
-                Arrays.Temporary.TriangleVertexCache[2] = ConvertPoint(mesh.vertices[mesh.triangles[startIndex + 2]]);
-                Handles.DrawLines(Arrays.Temporary.TriangleVertexCache, Arrays.TriangleLineIndices);
+                var startIndex = i * 3;
+                Buffers.Temporary.TriangleVectors3D[0] = ConvertPoint(mesh.vertices[mesh.triangles[startIndex]]);
+                Buffers.Temporary.TriangleVectors3D[1] = ConvertPoint(mesh.vertices[mesh.triangles[startIndex + 1]]);
+                Buffers.Temporary.TriangleVectors3D[2] = ConvertPoint(mesh.vertices[mesh.triangles[startIndex + 2]]);
+                Handles.DrawLines(Buffers.Temporary.TriangleVectors3D, Buffers.TriangleLineIndices);
             }
 
             Handles.EndGUI();
@@ -89,7 +77,7 @@ namespace MichisMeshMakers.Editor.Containers.Abstract.Generic
             {
                 var xy = new Vector2(point.x, point.y);
                 xy.Scale(new Vector2(position.width, position.height));
-                Vector2 center = position.center;
+                var center = position.center;
                 xy += new Vector2(center.x, center.y);
                 return new Vector3(xy.x, xy.y, 0f);
             }
@@ -104,7 +92,7 @@ namespace MichisMeshMakers.Editor.Containers.Abstract.Generic
         protected static void Initialize(TMeshContainer meshContainer, Texture2D texture)
         {
             var so = new SerializedObject(meshContainer);
-            SerializedProperty sp = so.FindProperty(TextureBasedMeshContainer.TextureFieldName);
+            var sp = so.FindProperty(TextureBasedMeshContainer.TextureFieldName);
             sp.objectReferenceValue = texture;
             so.ApplyModifiedProperties();
         }
