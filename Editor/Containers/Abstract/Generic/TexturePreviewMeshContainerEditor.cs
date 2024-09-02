@@ -5,35 +5,53 @@ using UnityEngine;
 
 namespace MichisVfxUtils.Editor.Containers.Abstract.Generic
 {
-    public abstract class TextureBasedMeshContainerEditor<TMeshContainer>
-        : MeshContainerEditor<TMeshContainer> where TMeshContainer : TextureBasedMeshContainer
+    public abstract class TexturePreviewMeshContainerEditor<TMeshContainer>
+        : MeshContainerEditor<TMeshContainer> where TMeshContainer : TexturePreviewMeshContainer
     {
         private SerializedProperty _textureProperty;
+        private SerializedProperty _previewMaterialProperty;
+        private SerializedProperty _previewSettingsProperty;
 
         protected override void OnEnable()
         {
             base.OnEnable();
-            _textureProperty = serializedObject.FindProperty(TextureBasedMeshContainer.TextureFieldName);
+            _previewSettingsProperty = serializedObject.FindProperty(TexturePreviewMeshContainer.PreviewSettingsFieldName);
+            _textureProperty = _previewSettingsProperty.FindPropertyRelative(TexturePreviewSettings.TextureFieldName);
+            _previewMaterialProperty = _previewSettingsProperty.FindPropertyRelative(TexturePreviewSettings.TexturePreviewMaterialFieldName);
         }
 
         protected override void DrawProperties()
         {
             base.DrawProperties();
+            DrawTexturePreviewSettings();
+        }
 
-            EditorGUI.BeginChangeCheck();
-            EditorGUILayout.PropertyField(_textureProperty, MeshContainerGuiLabels.SourceTexture);
-            if (EditorGUI.EndChangeCheck())
+        protected virtual void DrawTexturePreviewSettings()
+        {
+            _previewSettingsProperty.isExpanded = EditorGUILayout.BeginFoldoutHeaderGroup(_previewSettingsProperty.isExpanded, PreviewSettingsHeader);
+
+            if (_previewSettingsProperty.isExpanded)
             {
-                serializedObject.ApplyModifiedProperties();
+                EditorGUI.BeginChangeCheck();
+                EditorGUILayout.PropertyField(_textureProperty, MeshContainerGuiLabels.SourceTexture);
+                EditorGUILayout.PropertyField(_previewMaterialProperty);
+                if (EditorGUI.EndChangeCheck())
+                {
+                    serializedObject.ApplyModifiedProperties();
+                }
             }
+
+            EditorGUILayout.EndFoldoutHeaderGroup();
         }
 
         protected override void DrawMeshPreview(Rect rect, TMeshContainer meshContainer)
         {
             DrawCanvas(rect);
-            if (meshContainer.Texture != null)
+            Texture2D texture = meshContainer.PreviewSettings.Texture;
+            if (texture != null)
             {
-                DrawTexture(rect, meshContainer.Texture);
+                Material previewMaterial = EditorAssets.MaterialInstances.GetTexturePreviewMaterial(meshContainer.PreviewSettings.Material, texture);
+                EditorGUI.DrawPreviewTexture(rect, texture, previewMaterial, ScaleMode.StretchToFill);
             }
 
             DrawMesh(rect, meshContainer.Mesh);
@@ -46,17 +64,8 @@ namespace MichisVfxUtils.Editor.Containers.Abstract.Generic
                 return;
             }
 
-            Material canvasGridMaterial = EditorAssets.MaterialInstances.CanvasGrid;
-            canvasGridMaterial.SetVector(Ids.MaterialProperties.RectSize, new Vector2(rect.width, rect.height));
-            EditorGUI.DrawPreviewTexture(rect, EditorAssets.Textures.CanvasGrid, canvasGridMaterial,
-                ScaleMode.ScaleAndCrop);
-        }
-
-        protected virtual void DrawTexture(Rect position, Texture2D texture)
-        {
-            Material material = EditorAssets.MaterialInstances.Additive;
-            material.mainTexture = texture;
-            EditorGUI.DrawPreviewTexture(position, texture, material, ScaleMode.StretchToFill);
+            Material canvasGridMaterial = EditorAssets.MaterialInstances.GetCanvasGrid(rect);
+            EditorGUI.DrawPreviewTexture(rect, EditorAssets.Textures.CanvasGrid, canvasGridMaterial, ScaleMode.ScaleAndCrop);
         }
 
         protected virtual void DrawMesh(Rect position, Mesh mesh)
@@ -104,9 +113,12 @@ namespace MichisVfxUtils.Editor.Containers.Abstract.Generic
         protected static void Initialize(TMeshContainer meshContainer, Texture2D texture)
         {
             var so = new SerializedObject(meshContainer);
-            SerializedProperty sp = so.FindProperty(TextureBasedMeshContainer.TextureFieldName);
+            SerializedProperty sp = so.FindProperty(TexturePreviewMeshContainer.PreviewSettingsFieldName)
+                .FindPropertyRelative(TexturePreviewSettings.TextureFieldName);
             sp.objectReferenceValue = texture;
             so.ApplyModifiedProperties();
         }
+
+        private static readonly GUIContent PreviewSettingsHeader = new GUIContent("Preview Settings", "Settings related to the texture preview below.");
     }
 }

@@ -139,6 +139,11 @@ namespace MichisVfxUtils.Editor.Containers.Abstract
 
         protected virtual void DrawProperties()
         {
+            DrawGeneratedMeshProperty();
+        }
+
+        protected virtual void DrawGeneratedMeshProperty()
+        {
             using (new EditorGUI.DisabledScope(true))
             {
                 EditorGUILayout.PropertyField(_meshProperty, MeshContainerGuiLabels.GeneratedMesh);

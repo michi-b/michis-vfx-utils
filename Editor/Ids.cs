@@ -17,9 +17,12 @@ namespace MichisVfxUtils.Editor
         public class MaterialPropertyIdCollection
         {
             private const string RectSizeName = "_RectSize";
+            private const string MainTextureName = "_MainTex";
 
+            private readonly int _mainTextureId = Shader.PropertyToID(MainTextureName);
             private readonly int _rectSizeId = Shader.PropertyToID(RectSizeName);
 
+            public int MainTexture => _mainTextureId;
             public int RectSize => _rectSizeId;
         }
     }

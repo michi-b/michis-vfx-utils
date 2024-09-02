@@ -8,43 +8,65 @@ namespace MichisVfxUtils.Editor.Assets
     {
         [SerializeField] private Material _canvasGrid;
         [SerializeField] private Material _additive;
+        [SerializeField] private Material _transparent;
 
         private Material _canvasGridInstance;
         private Material _additiveInstance;
+        private Material _transparentInstance;
 
-        public Material CanvasGrid
+        public Material GetCanvasGrid(Rect rect)
         {
-            get
+            // ReSharper disable once Unity.PerformanceCriticalCodeNullComparison
+            if (_canvasGridInstance == null)
             {
-                // ReSharper disable once Unity.PerformanceCriticalCodeNullComparison
-                if (_canvasGridInstance == null)
-                {
-                    _canvasGridInstance = new Material(_canvasGrid);
-                }
-
-                return _canvasGridInstance;
+                _canvasGridInstance = new Material(_canvasGrid);
             }
+
+            _canvasGridInstance.SetVector(Ids.MaterialProperties.RectSize, new Vector2(rect.width, rect.height));
+
+            return _canvasGridInstance;
         }
 
-        public Material Additive
+        public Material GetTexturePreviewMaterial(TexturePreviewMaterial texturePreviewMaterial, Texture2D texture)
         {
-            get
+            return texturePreviewMaterial switch
             {
-                // ReSharper disable once Unity.PerformanceCriticalCodeNullComparison
-                if (_additiveInstance == null)
-                {
-                    _additiveInstance = new Material(_additive);
-                }
-
-                return _additiveInstance;
-            }
+                TexturePreviewMaterial.Transparent => GetTransparent(texture),
+                TexturePreviewMaterial.Additive => GetAdditive(texture),
+                _ => throw new ArgumentOutOfRangeException(nameof(texturePreviewMaterial), texturePreviewMaterial, null)
+            };
         }
 
-        // ReSharper disable once MemberHidesStaticFromOuterClass
         public void ClearCache()
         {
             _canvasGridInstance = null;
             _additiveInstance = null;
+        }
+
+        private Material GetTransparent(Texture texture)
+        {
+            // ReSharper disable once Unity.PerformanceCriticalCodeNullComparison
+            if (_transparentInstance == null)
+            {
+                _transparentInstance = new Material(_transparent);
+            }
+
+            _transparentInstance.SetTexture(Ids.MaterialProperties.MainTexture, texture);
+
+            return _transparentInstance;
+        }
+
+        private Material GetAdditive(Texture texture)
+        {
+            // ReSharper disable once Unity.PerformanceCriticalCodeNullComparison
+            if (_additiveInstance == null)
+            {
+                _additiveInstance = new Material(_additive);
+            }
+
+            _additiveInstance.SetTexture(Ids.MaterialProperties.MainTexture, texture);
+
+            return _additiveInstance;
         }
     }
 }

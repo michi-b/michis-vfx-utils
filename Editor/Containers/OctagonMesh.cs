@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace MichisVfxUtils.Editor.Containers
 {
-    public class OctagonMesh : TextureBasedMeshContainer
+    public class OctagonMesh : TexturePreviewMeshContainer
     {
         public const string AxisLengthFieldName = nameof(_axisLength);
         public const string DiagonalLengthFieldName = nameof(_diagonalLength);
@@ -39,10 +39,7 @@ namespace MichisVfxUtils.Editor.Containers
             bool isAxisOverSized = unconstrainedLengths.Axis >= AxisLengthConstraint;
             bool isDiagonallyOverSized = unconstrainedLengths.Diagonal >= DiagonalLengthConstraint;
 
-            bool isQuad = Math.Abs(constrainedLengths.Diagonal * Constants.OneBySqrtOf2 - _axisLength) < float.Epsilon
-                          || (isAxisOverSized && isDiagonallyOverSized);
-
-            MeshData meshData = isQuad
+            MeshData meshData = isAxisOverSized && isDiagonallyOverSized
                 ? Quad.Generate(constrainedLengths)
                 : _constrainLengths
                     ? Octagon.Generate(constrainedLengths)

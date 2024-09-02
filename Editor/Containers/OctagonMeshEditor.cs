@@ -8,7 +8,7 @@ namespace MichisVfxUtils.Editor.Containers
 {
     [CanEditMultipleObjects]
     [CustomEditor(typeof(OctagonMesh))]
-    public class OctagonMeshEditor : TextureBasedMeshContainerEditor<OctagonMesh>
+    public class OctagonMeshEditor : TexturePreviewMeshContainerEditor<OctagonMesh>
     {
         private const string AssetMenuName = "Octagon Mesh";
         private const string FallbackAssetName = "OctagonMesh";
@@ -40,7 +40,7 @@ namespace MichisVfxUtils.Editor.Containers
 
         protected override void DrawProperties()
         {
-            base.DrawProperties();
+            DrawGeneratedMeshProperty();
 
             EditorGUI.BeginChangeCheck();
             EditorGuiLayoutUtility.ToggleLeftProperty(_constrainLengthsProperty, ConstrainLengthsLabel);
@@ -62,6 +62,8 @@ namespace MichisVfxUtils.Editor.Containers
                 serializedObject.ApplyModifiedProperties();
                 Apply();
             }
+
+            DrawTexturePreviewSettings();
         }
 
         private static void DrawUnconstrainedLengthProperty(SerializedProperty property, GUIContent label)
