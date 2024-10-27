@@ -1,6 +1,6 @@
 {
   "name": "com.michi-b.michis-vfx-utils",
-  "version": "1.0.0-preview.2",
+  "version": "1.0.0",
   "displayName": "Michi's VFX Utils",
   "description": "Various tools to help with general VFX development.",
   "unity": "2020.3",
