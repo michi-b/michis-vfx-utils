@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace MichisVfxUtils.Editor.Containers.Abstract
+namespace Michis.VfxUtils.Editor.Containers.Abstract
 {
     public abstract class MeshContainer : ScriptableObject
     {

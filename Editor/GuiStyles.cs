@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace MichisVfxUtils.Editor
+namespace Michis.VfxUtils.Editor
 {
     public static class GuiStyles
     {

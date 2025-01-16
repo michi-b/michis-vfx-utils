@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 
-namespace MichisVfxUtils.Editor
+namespace Michis.VfxUtils.Editor
 {
     public class Ids
     {

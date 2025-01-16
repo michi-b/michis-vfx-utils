@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace MichisVfxUtils.Editor.Containers
+namespace Michis.VfxUtils.Editor.Containers
 {
     public static class MeshContainerGuiLabels
     {

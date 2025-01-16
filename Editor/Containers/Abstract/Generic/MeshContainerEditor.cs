@@ -1,11 +1,11 @@
 ﻿using System;
 using System.IO;
 using JetBrains.Annotations;
-using MichisVfxUtils.Editor.Utility;
+using Michis.VfxUtils.Editor.Utility;
 using UnityEditor;
 using UnityEngine;
 
-namespace MichisVfxUtils.Editor.Containers.Abstract.Generic
+namespace Michis.VfxUtils.Editor.Containers.Abstract.Generic
 {
     public abstract class MeshContainerEditor<TMeshContainer> : MeshContainerEditorBase
         where TMeshContainer : MeshContainer

@@ -1,4 +1,4 @@
-﻿namespace MichisVfxUtils.Editor
+﻿namespace Michis.VfxUtils.Editor
 {
     public static class Menu
     {

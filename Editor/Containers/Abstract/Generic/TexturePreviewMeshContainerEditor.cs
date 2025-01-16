@@ -1,9 +1,9 @@
-﻿using MichisVfxUtils.Editor.Assets;
-using MichisVfxUtils.Editor.Utility;
+﻿using Michis.VfxUtils.Editor.Assets;
+using Michis.VfxUtils.Editor.Utility;
 using UnityEditor;
 using UnityEngine;
 
-namespace MichisVfxUtils.Editor.Containers.Abstract.Generic
+namespace Michis.VfxUtils.Editor.Containers.Abstract.Generic
 {
     public abstract class TexturePreviewMeshContainerEditor<TMeshContainer>
         : MeshContainerEditor<TMeshContainer> where TMeshContainer : TexturePreviewMeshContainer

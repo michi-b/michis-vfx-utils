@@ -1,9 +1,9 @@
-using MichisVfxUtils.Editor.Containers;
-using MichisVfxUtils.Editor.Utility;
+using Michis.VfxUtils.Editor.Containers;
+using Michis.VfxUtils.Editor.Utility;
 using UnityEditor;
 using UnityEngine;
 
-namespace MichisVfxUtils.Editor
+namespace Michis.VfxUtils.Editor
 {
     public class ParticleSystemContextMenu : MonoBehaviour
     {

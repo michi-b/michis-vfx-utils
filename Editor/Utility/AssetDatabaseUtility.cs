@@ -1,9 +1,9 @@
 ﻿using System.IO;
-using MichisVfxUtils.Editor.Containers.Abstract;
+using Michis.VfxUtils.Editor.Containers.Abstract;
 using UnityEditor;
 using UnityEngine;
 
-namespace MichisVfxUtils.Editor.Utility
+namespace Michis.VfxUtils.Editor.Utility
 {
     public static class AssetDatabaseUtility
     {

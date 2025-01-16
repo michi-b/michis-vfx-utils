@@ -1,10 +1,9 @@
-﻿using System;
-using MichisVfxUtils.Editor.Containers.Abstract.Generic;
-using MichisVfxUtils.Editor.Extensions;
+﻿using Michis.VfxUtils.Editor.Containers.Abstract.Generic;
+using Michis.VfxUtils.Editor.Extensions;
 using Unity.Collections;
 using UnityEngine;
 
-namespace MichisVfxUtils.Editor.Containers
+namespace Michis.VfxUtils.Editor.Containers
 {
     public class OctagonMesh : TexturePreviewMeshContainer
     {

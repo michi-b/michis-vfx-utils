@@ -1,9 +1,9 @@
 ﻿using System;
-using MichisVfxUtils.Editor.Assets;
+using Michis.VfxUtils.Editor.Assets;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace MichisVfxUtils.Editor.Containers.Abstract.Generic
+namespace Michis.VfxUtils.Editor.Containers.Abstract.Generic
 {
     [Serializable]
     public struct TexturePreviewSettings

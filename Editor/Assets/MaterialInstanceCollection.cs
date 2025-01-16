@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace MichisVfxUtils.Editor.Assets
+namespace Michis.VfxUtils.Editor.Assets
 {
     [Serializable]
     public class MaterialInstanceCollection

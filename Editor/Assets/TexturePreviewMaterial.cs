@@ -1,4 +1,4 @@
-﻿namespace MichisVfxUtils.Editor.Assets
+﻿namespace Michis.VfxUtils.Editor.Assets
 {
     public enum TexturePreviewMaterial
     {

@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace MichisVfxUtils.Editor.Utility
+namespace Michis.VfxUtils.Editor.Utility
 {
     public static class SelectionUtility
     {

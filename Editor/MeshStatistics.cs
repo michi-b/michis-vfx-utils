@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace MichisVfxUtils.Editor
+namespace Michis.VfxUtils.Editor
 {
     [Serializable]
     public struct MeshStatistics

@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
-using UnityEngine.Serialization;
 
-namespace MichisVfxUtils.Editor.Containers.Abstract.Generic
+namespace Michis.VfxUtils.Editor.Containers.Abstract.Generic
 {
     public abstract class TexturePreviewMeshContainer : MeshContainer
     {
